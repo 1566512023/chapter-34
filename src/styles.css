@@ -59,29 +59,53 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-parchment: var(--parchment);
+  --color-parchment-deep: var(--parchment-deep);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-leather: var(--leather);
+  --color-leather-deep: var(--leather-deep);
+  --color-ribbon: var(--ribbon);
+  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+  --font-body: "EB Garamond", "Times New Roman", serif;
+  --font-hand: "Homemade Apple", "Dancing Script", cursive;
+  --font-script: "Great Vibes", "Dancing Script", cursive;
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
+  --radius: 0.5rem;
+  /* Warm heirloom journal palette */
+  --parchment: oklch(0.955 0.028 82);
+  --parchment-deep: oklch(0.9 0.04 78);
+  --ink: oklch(0.28 0.045 45);
+  --ink-soft: oklch(0.42 0.05 45);
+  --gold: oklch(0.72 0.13 78);
+  --gold-soft: oklch(0.82 0.09 82);
+  --leather: oklch(0.36 0.07 45);
+  --leather-deep: oklch(0.22 0.05 40);
+  --ribbon: oklch(0.42 0.13 25);
+
+  --background: oklch(0.14 0.02 40);
+  --foreground: var(--parchment);
+  --card: var(--parchment);
+  --card-foreground: var(--ink);
+  --popover: var(--parchment);
+  --popover-foreground: var(--ink);
+  --primary: var(--gold);
+  --primary-foreground: var(--leather-deep);
+  --secondary: var(--leather);
+  --secondary-foreground: var(--parchment);
+  --muted: oklch(0.9 0.03 78);
+  --muted-foreground: var(--ink-soft);
+  --accent: var(--ribbon);
+  --accent-foreground: var(--parchment);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
+  --border: oklch(0.85 0.04 78);
+  --input: oklch(0.85 0.04 78);
+  --ring: var(--gold);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -140,5 +164,160 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-body);
+    font-feature-settings: "kern", "liga", "clig", "calt";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
   }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+}
+
+/* ---------- Living Journal utilities ---------- */
+
+@utility font-hand {
+  font-family: var(--font-hand);
+}
+@utility font-script {
+  font-family: var(--font-script);
+}
+@utility font-display {
+  font-family: var(--font-display);
+}
+
+@utility paper {
+  background-color: var(--parchment);
+  background-image:
+    radial-gradient(ellipse at top, oklch(1 0 0 / 0.35), transparent 60%),
+    radial-gradient(ellipse at bottom right, oklch(0 0 0 / 0.12), transparent 55%),
+    url("/paper.jpg");
+  background-size: cover;
+  background-blend-mode: multiply;
+  color: var(--ink);
+  box-shadow:
+    inset 0 0 80px oklch(0.35 0.08 45 / 0.18),
+    inset 0 0 12px oklch(0.25 0.06 40 / 0.25);
+}
+
+@utility ink-text {
+  color: var(--ink);
+}
+
+@utility gold-text {
+  color: var(--gold);
+  text-shadow: 0 0 20px oklch(0.72 0.13 78 / 0.35);
+}
+
+@utility gold-underline {
+  &::after {
+    content: "";
+    display: block;
+    width: 4rem;
+    height: 1px;
+    margin: 1rem auto 0;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+}
+
+@utility btn-ink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--ink);
+  border: 1px solid oklch(0.45 0.08 45 / 0.55);
+  background: transparent;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 400ms ease;
+  position: relative;
+  letter-spacing: 0.05em;
+  &:hover {
+    color: var(--gold);
+    border-color: var(--gold);
+    background: oklch(0.72 0.13 78 / 0.08);
+    box-shadow: 0 0 20px oklch(0.72 0.13 78 / 0.15);
+  }
+}
+
+/* Candle flicker */
+@keyframes flicker {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  25% { opacity: 0.92; filter: brightness(1.05); }
+  50% { opacity: 1; filter: brightness(0.95); }
+  75% { opacity: 0.96; filter: brightness(1.08); }
+}
+@utility candle-glow {
+  animation: flicker 4s ease-in-out infinite;
+}
+
+/* Floating dust */
+@keyframes drift {
+  0% { transform: translate(0, 100vh) scale(0.6); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.5; }
+  100% { transform: translate(30px, -10vh) scale(1); opacity: 0; }
+}
+@utility dust {
+  animation: drift linear infinite;
+}
+
+/* Ribbon sway */
+@keyframes sway {
+  0%, 100% { transform: rotate(-1deg); }
+  50% { transform: rotate(2deg); }
+}
+@utility ribbon-sway {
+  transform-origin: top center;
+  animation: sway 5s ease-in-out infinite;
+}
+
+/* Journal breathing lift */
+@keyframes breathe {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@utility journal-breathe {
+  animation: breathe 6s ease-in-out infinite;
+}
+
+/* Page turn */
+@keyframes page-turn-in {
+  0% { transform: perspective(2000px) rotateY(-90deg); transform-origin: left center; opacity: 0; }
+  100% { transform: perspective(2000px) rotateY(0deg); opacity: 1; }
+}
+@keyframes page-turn-out {
+  0% { transform: perspective(2000px) rotateY(0deg); transform-origin: right center; opacity: 1; }
+  100% { transform: perspective(2000px) rotateY(90deg); opacity: 0; }
+}
+@utility page-in {
+  animation: page-turn-in 900ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+@utility page-out {
+  animation: page-turn-out 700ms cubic-bezier(0.55, 0.06, 0.68, 0.19) both;
+}
+
+/* Handwritten reveal */
+@keyframes ink-in {
+  from { opacity: 0; transform: translateY(6px); filter: blur(2px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@utility ink-in {
+  animation: ink-in 1.4s ease-out both;
+}
+
+/* Soft golden pulse for cover glow */
+@keyframes golden-pulse {
+  0%, 100% { box-shadow: 0 0 0 oklch(0.72 0.13 78 / 0); }
+  50% { box-shadow: 0 0 60px oklch(0.72 0.13 78 / 0.35); }
+}
+@utility golden-pulse {
+  animation: golden-pulse 4s ease-in-out infinite;
 }
