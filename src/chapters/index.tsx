@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactElement } from "react";
 import { Link } from "@tanstack/react-router";
 import { chapters, type Chapter, type ChapterItem } from "@/data/chapters";
 import { ChapterFrame } from "@/components/chapter/ChapterFrame";
@@ -660,8 +660,7 @@ function Verdict({ ch }: { ch: Chapter }) {
                 type="button"
                 onClick={() => r.open(it)}
                 style={{ animationDelay: `${i * 140}ms` }}
-                className="ink-in group flex aspect-square flex-col items-center justify-center rounded-full border-2 border-[oklch(0.5_0.2_25)] font-display text-xs uppercase tracking-widest text-[oklch(0.5_0.2_25)] transition-transform hover:scale-110"
-                style-x=""
+                className="ink-in group flex aspect-square flex-col items-center justify-center rounded-full border-2 border-[oklch(0.5_0.2_25)] font-display text-[0.6rem] uppercase tracking-widest text-[oklch(0.5_0.2_25)] transition-transform hover:scale-110"
               >
                 {it.title}
               </button>
@@ -780,7 +779,7 @@ function Future({ ch }: { ch: Chapter }) {
 
 // ---------- Registry ----------
 
-type ChapterComponent = (props: { ch: Chapter }) => JSX.Element;
+type ChapterComponent = (props: { ch: Chapter }) => ReactElement;
 
 export const chapterComponents: Record<string, ChapterComponent> = {
   "before-time": BeforeTime,
