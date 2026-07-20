@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { chapters, dedication } from "@/data/chapters";
-import { getBookmark } from "@/lib/bookmark";
+import { readBookmark } from "@/lib/bookmark";
 import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/journal")({
@@ -19,7 +19,7 @@ export const Route = createFileRoute("/journal")({
 
 function JournalPage() {
   const [bookmark, setBookmark] = useState<string | null>(null);
-  useEffect(() => setBookmark(getBookmark()), []);
+  useEffect(() => setBookmark(readBookmark()), []);
 
   return (
     <div
