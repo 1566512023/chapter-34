@@ -27,7 +27,7 @@ export function ChapterFrame({
   next,
 }: ChapterFrameProps) {
   return (
-    <div className="chapter-in relative min-h-screen w-full overflow-hidden">
+    <div className="page-in relative min-h-screen w-full overflow-hidden">
       {/* background */}
       <div
         className="pointer-events-none absolute inset-0"
