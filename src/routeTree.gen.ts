@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ChapterIdRouteImport } from './routes/chapter.$id'
 
 const JournalRoute = JournalRouteImport.update({
   id: '/journal',
@@ -22,31 +23,40 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChapterIdRoute = ChapterIdRouteImport.update({
+  id: '/chapter/$id',
+  path: '/chapter/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/journal': typeof JournalRoute
+  '/chapter/$id': typeof ChapterIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/journal': typeof JournalRoute
+  '/chapter/$id': typeof ChapterIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/journal': typeof JournalRoute
+  '/chapter/$id': typeof ChapterIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/journal'
+  fullPaths: '/' | '/journal' | '/chapter/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/journal'
-  id: '__root__' | '/' | '/journal'
+  to: '/' | '/journal' | '/chapter/$id'
+  id: '__root__' | '/' | '/journal' | '/chapter/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   JournalRoute: typeof JournalRoute
+  ChapterIdRoute: typeof ChapterIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +75,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/chapter/$id': {
+      id: '/chapter/$id'
+      path: '/chapter/$id'
+      fullPath: '/chapter/$id'
+      preLoaderRoute: typeof ChapterIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   JournalRoute: JournalRoute,
+  ChapterIdRoute: ChapterIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
