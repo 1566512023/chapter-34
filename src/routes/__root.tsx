@@ -12,6 +12,8 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { JournalNav } from "@/components/JournalNav";
+import { KeepsakeInventory } from "@/components/KeepsakeInventory";
+import { PenEasterEgg } from "@/components/PenEasterEgg";
 
 function NotFoundComponent() {
   return (
@@ -135,6 +137,8 @@ function RootComponent() {
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
       <JournalNav />
+      <KeepsakeInventory />
+      <PenEasterEgg />
     </QueryClientProvider>
   );
 }
