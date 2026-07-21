@@ -403,7 +403,7 @@ function Faithfulness({ ch }: { ch: Chapter }) {
     { top: "12%", left: "18%" }, { top: "22%", left: "42%" }, { top: "8%", left: "68%" },
     { top: "35%", left: "78%" }, { top: "45%", left: "20%" }, { top: "55%", left: "55%" },
     { top: "72%", left: "35%" }, { top: "80%", left: "72%" }, { top: "30%", left: "55%" },
-    { top: "62%", left: "12%" },
+    { top: "62%", left: "12%" }, { top: "18%", left: "88%" }, { top: "70%", left: "88%" },
   ];
   return (
     <ChapterFrame

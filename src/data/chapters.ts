@@ -52,6 +52,24 @@ export const chapters: Chapter[] = [
       { id: "s4", title: "The Call to Law", subtitle: "University", body: "The moment purpose met preparation." },
       { id: "s5", title: "Motherhood", subtitle: "Zane", body: "The greatest calling of all." },
       { id: "s6", title: "The Firm", subtitle: "2021", body: "The dream God placed in her heart became a door." },
+      {
+        id: "pen",
+        title: "A Prayer Answered on Four Wheels",
+        subtitle: "2026 — Welcome Home, Pen",
+        scripture:
+          "The Lord will watch over your coming and going both now and forevermore. — Psalm 121:8",
+        body:
+          "This wasn't just the purchase of a car. It was another reminder that God faithfully provides exactly what is needed in every season.",
+        details: [
+          "Pen represents freedom, new journeys, answered prayers, and countless memories still waiting to be made.",
+          "May every road travelled be covered by God's protection, every destination guided by His wisdom, and every journey become another testimony of His faithfulness.",
+        ],
+        keepsakes: [
+          { label: "The key", note: "held in a hand that had prayed for it" },
+          { label: "The name", note: "Pen — the little vehicle of a big yes" },
+          { label: "The promise", note: "Psalm 121:8, tucked into the glovebox of her heart" },
+        ],
+      },
       { id: "s7", title: "Today", subtitle: "Chapter 34", body: "Thus far the Lord has helped her." },
     ],
   },
@@ -186,6 +204,25 @@ export const chapters: Chapter[] = [
       { id: "p8", title: "Doors Closed", body: "The mercies that felt like losses at the time." },
       { id: "p9", title: "A Whisper", body: "The moment you knew He was near." },
       { id: "p10", title: "The North Star", body: "The one constant when everything else moved." },
+      {
+        id: "pen-journey",
+        title: "Pen's Journey",
+        scripture: "Psalm 121:8",
+        body:
+          "Every journey begins with a single step — or in this case, a single turn of the key. May Pen always remind you that God's faithfulness travels with you wherever the road leads.",
+        details: [
+          "Lord, thank You for Your provision. Thank You for making a way.",
+          "Protect every journey. Keep every passenger safe.",
+          "May every kilometre travelled remind me that You go before me. Amen.",
+        ],
+      },
+      {
+        id: "provision-pen",
+        title: "God's Provision",
+        body:
+          "Sometimes God's blessings arrive quietly. A key. A new beginning. A safe journey. A reminder that He faithfully provides exactly what we need.",
+        details: ["Pen will always remind us of this season of God's provision."],
+      },
     ],
   },
   {
@@ -202,6 +239,13 @@ export const chapters: Chapter[] = [
       { id: "d6", title: "Write a Book", subtitle: "Believing", body: "One day, this story on paper." },
       { id: "d7", title: "Mentor Others", subtitle: "In progress", body: "Being for someone what her mentors were for her." },
       { id: "d8", title: "A Secret Dream", subtitle: "Held", body: "The one she has only whispered to God." },
+      {
+        id: "owning-pen",
+        title: "Owning Pen",
+        subtitle: "Fulfilled",
+        body:
+          "What was once a prayer has become part of your testimony. Celebrate God's goodness, then keep dreaming — because the same faithful God who fulfilled this prayer is still writing the chapters to come.",
+      },
     ],
   },
   {
@@ -219,6 +263,20 @@ export const chapters: Chapter[] = [
       { id: "2026", title: "2026 — Chapter 34", body: "This year. This chapter. This gift." },
       { id: "2027", title: "2027", body: "A blank album, waiting." },
       { id: "2028", title: "2028", body: "Another blank album, waiting." },
+      {
+        id: "welcome-pen",
+        title: "Welcome Home, Pen",
+        body: "An album that grows with every road travelled.",
+        details: [
+          "Delivery Day · First Drive · Favourite Road Trips",
+          "Funny Car Moments · Photos with Pen · Family Adventures",
+          "Road Trip Playlist · Places Pen Has Taken Us",
+        ],
+        keepsakes: [
+          { label: "First page", note: "the day the keys came home" },
+          { label: "A blank page", note: "for the next road, and the next" },
+        ],
+      },
     ],
   },
   {
@@ -248,6 +306,17 @@ export const chapters: Chapter[] = [
       { id: "devotionals", title: "Devotionals", body: "Small readings for quiet mornings." },
       { id: "worship", title: "Worship", body: "The songs that carry her." },
       { id: "studies", title: "Bible Studies", body: "The books of Scripture she is walking through." },
+      {
+        id: "safe-travels",
+        title: "Prayer Before Every Journey",
+        body:
+          "Heavenly Father, thank You for the gift of Pen and for Your faithful provision. As I travel, go before me and remain beside me.",
+        details: [
+          "Protect every passenger, every destination, and every return home.",
+          "Let every journey remind me that You are watching over my coming and my going.",
+          "Fill my travels with peace, wisdom, and gratitude, and may every mile become another testimony of Your goodness. In Jesus' name, Amen.",
+        ],
+      },
     ],
   },
   {

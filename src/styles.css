@@ -321,3 +321,48 @@
 @utility golden-pulse {
   animation: golden-pulse 4s ease-in-out infinite;
 }
+
+/* ---------- Pen easter egg ---------- */
+@keyframes pen-drive-x {
+  0% { transform: translateX(-20vw); }
+  100% { transform: translateX(120vw); }
+}
+@keyframes pen-bump {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+@keyframes pen-caption-in {
+  0%, 60% { opacity: 0; transform: translateY(6px); }
+  75%, 95% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-4px); }
+}
+@keyframes pen-trail-twinkle {
+  0% { opacity: 0; transform: translateY(0) scale(0.6); }
+  30% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-14px) scale(1.1); }
+}
+.pen-drive {
+  animation: pen-drive-x 6s linear forwards;
+}
+.pen-car {
+  display: inline-block;
+  font-size: 2.25rem;
+  animation: pen-bump 0.6s ease-in-out infinite;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
+}
+.pen-trail {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin: 0 6px 4px 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, oklch(0.95 0.15 82), oklch(0.72 0.13 78));
+  box-shadow: 0 0 12px oklch(0.85 0.15 78 / 0.9);
+  animation: pen-trail-twinkle 1.6s ease-out infinite;
+}
+.pen-trail:nth-child(2) { animation-delay: 0.2s; }
+.pen-trail:nth-child(3) { animation-delay: 0.4s; }
+.pen-caption {
+  opacity: 0;
+  animation: pen-caption-in 6s ease-in-out forwards;
+}

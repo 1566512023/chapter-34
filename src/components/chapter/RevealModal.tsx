@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import type { ChapterItem } from "@/data/chapters";
+import { useRouterState } from "@tanstack/react-router";
+import { recordDiscovery } from "@/lib/inventory";
 
 interface Props {
   item: ChapterItem | null;
@@ -8,12 +10,23 @@ interface Props {
 }
 
 export function RevealModal({ item, onClose, accent = "oklch(0.85 0.13 82)" }: Props) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
   useEffect(() => {
     if (!item) return;
+    // Record discovery in the keepsake inventory.
+    const chapterId = pathname.startsWith("/chapter/")
+      ? pathname.slice("/chapter/".length)
+      : "";
+    if (chapterId) recordDiscovery(chapterId, item.id, item.title);
+    // Pen easter egg: play the driving car when a Pen-themed memory opens.
+    const haystack = `${item.title} ${item.body ?? ""} ${item.subtitle ?? ""}`;
+    if (/\bPen\b/.test(haystack) && typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("pen:drive"));
+    }
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [item, onClose]);
+  }, [item, onClose, pathname]);
 
   if (!item) return null;
 
