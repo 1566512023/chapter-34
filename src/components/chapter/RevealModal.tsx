@@ -59,6 +59,36 @@ export function RevealModal({ item, onClose, accent = "oklch(0.85 0.13 82)" }: P
             {item.body}
           </p>
         )}
+        {item.details && item.details.length > 0 && (
+          <div className="mt-5 space-y-3">
+            {item.details.map((d, i) => (
+              <p
+                key={i}
+                className="font-display leading-relaxed text-[color:var(--ink)]/90"
+              >
+                {d}
+              </p>
+            ))}
+          </div>
+        )}
+        {item.keepsakes && item.keepsakes.length > 0 && (
+          <ul className="mt-6 space-y-2 border-t border-current/15 pt-5">
+            {item.keepsakes.map((k, i) => (
+              <li
+                key={i}
+                className="flex items-baseline gap-3 font-hand text-[color:var(--ink)]"
+              >
+                <span
+                  className="shrink-0 font-display text-[0.65rem] uppercase tracking-[0.35em]"
+                  style={{ color: accent }}
+                >
+                  {k.label}
+                </span>
+                <span className="text-[color:var(--ink-soft)]">— {k.note}</span>
+              </li>
+            ))}
+          </ul>
+        )}
         {item.placeholder && (
           <p className="mt-6 font-hand text-sm text-[color:var(--ink-soft)]">
             A place kept open — add a photograph or memory here.

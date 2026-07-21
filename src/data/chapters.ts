@@ -6,6 +6,8 @@ export interface ChapterItem {
   scripture?: string;
   image?: string;
   placeholder?: boolean;
+  details?: string[];
+  keepsakes?: { label: string; note: string }[];
 }
 
 export interface Chapter {
@@ -60,10 +62,38 @@ export const chapters: Chapter[] = [
     theme: "The people whose love helped shape who you are.",
     closing: "You did not bloom alone. You were watered by love.",
     items: [
-      { id: "granny", title: "Granny", body: "The steady hands that first taught her prayer. The lullabies still hum in her heart.", placeholder: true },
-      { id: "sister", title: "Sister", body: "The first friend. The forever friend. The one who shares the same stories and the same blood.", placeholder: true },
-      { id: "mother", title: "Mother", body: "The woman whose love became her first picture of grace." },
-      { id: "father", title: "Father", body: "Strength, steadiness, a quiet kind of love." },
+      {
+        id: "granny",
+        title: "Granny",
+        body: "The steady hands that first taught her prayer. The lullabies still hum in her heart.",
+        placeholder: true,
+        details: [
+          "She was the first altar in your life — the place you learned that God listens.",
+          "Her kitchen smelled of Sunday and psalms. Her hands folded yours into your first 'amen'.",
+          "Every quiet strength you carry into a courtroom, a nursery, a prayer — she planted it first.",
+        ],
+        keepsakes: [
+          { label: "A lullaby", note: "the one she hummed when the house was dark" },
+          { label: "A verse", note: "Proverbs 31 — the woman she was, the woman she prayed you'd be" },
+          { label: "A promise", note: "'The Lord will keep you.'" },
+        ],
+      },
+      {
+        id: "sister",
+        title: "Sister",
+        body: "The first friend. The forever friend. The one who shares the same stories and the same blood.",
+        placeholder: true,
+        details: [
+          "The one who remembers the same childhood — the same hallway, the same laughter, the same rain.",
+          "The witness. The keeper of secrets that never needed telling out loud.",
+          "This whole journal is written from her — every page a small love letter that says, 'I see you.'",
+        ],
+        keepsakes: [
+          { label: "Shared song", note: "the one we still know every word of" },
+          { label: "A memory", note: "two little girls, one blanket fort, endless plans" },
+          { label: "A prayer", note: "that God keep us close, all our days" },
+        ],
+      },
       { id: "mentor", title: "A Mentor", body: "One who saw what she could not yet see in herself." },
       { id: "add-yours", title: "Add Another Name", body: "A blossom left blank — for a name you would like to plant here." },
     ],
@@ -243,12 +273,72 @@ export const chapters: Chapter[] = [
       { id: "tree", title: "The Family Tree", body: "Where she came from, and where she is going." },
       { id: "values", title: "Family Values", body: "Faith. Excellence. Kindness. Loyalty. Truth." },
       { id: "crest", title: "The Family Crest", body: "The symbols that carry her house." },
-      { id: "blessings", title: "Jar of Blessings", body: "Every folded note a small mercy. The jar keeps filling." },
-      { id: "capsule-35", title: "Time Capsule — 35th Birthday", body: "A letter waiting for one year from now.", placeholder: true },
-      { id: "capsule-40", title: "Time Capsule — 40th Birthday", body: "A letter waiting for six years from now.", placeholder: true },
-      { id: "capsule-zane", title: "Time Capsule — Zane at 18", body: "A letter waiting for the day he becomes a man.", placeholder: true },
-      { id: "capsule-christmas", title: "Time Capsule — Christmas", body: "A letter to be opened by candlelight.", placeholder: true },
-      { id: "capsule-decade", title: "Time Capsule — Ten Years From Now", body: "A letter waiting for a woman she has not yet become.", placeholder: true },
+      {
+        id: "blessings",
+        title: "Jar of Blessings",
+        body: "Every folded note a small mercy. The jar keeps filling.",
+        details: [
+          "Unfold one note and remember: God has been faithful in the small print of ordinary days.",
+          "A parking spot in the rain. A phone call at the right hour. A yes that finally came.",
+          "This jar is proof — you have been carried far more often than you were left to walk alone.",
+        ],
+        keepsakes: [
+          { label: "A note", note: "'the day the diagnosis came back clear'" },
+          { label: "A note", note: "'the client who found us just in time'" },
+          { label: "A note", note: "'the morning Zane said I love you first'" },
+          { label: "A note", note: "'the friend who stayed'" },
+        ],
+      },
+      {
+        id: "capsule-35",
+        title: "Time Capsule — 35th Birthday",
+        body: "A letter waiting for one year from now.",
+        placeholder: true,
+        details: [
+          "Sealed with a promise: to open only when the candles number thirty-five.",
+          "Inside: a prayer for the year, a hope, a question only your future self can answer.",
+        ],
+      },
+      {
+        id: "capsule-40",
+        title: "Time Capsule — 40th Birthday",
+        body: "A letter waiting for six years from now.",
+        placeholder: true,
+        details: [
+          "For the woman you will be at forty — steadier, softer, still His.",
+          "A reminder of who you were when you wrote it, so you can see how far He has taken you.",
+        ],
+      },
+      {
+        id: "capsule-zane",
+        title: "Time Capsule — Zane at 18",
+        body: "A letter waiting for the day he becomes a man.",
+        placeholder: true,
+        details: [
+          "For the day the little boy stands tall and the mama looks up instead of down.",
+          "Inside: the story of how he was prayed for, waited for, loved before he was known.",
+        ],
+      },
+      {
+        id: "capsule-christmas",
+        title: "Time Capsule — Christmas",
+        body: "A letter to be opened by candlelight.",
+        placeholder: true,
+        details: [
+          "For a quiet night when the tree is lit and the house is still.",
+          "A gentle reminder that Emmanuel — God with us — was the first and best gift.",
+        ],
+      },
+      {
+        id: "capsule-decade",
+        title: "Time Capsule — Ten Years From Now",
+        body: "A letter waiting for a woman she has not yet become.",
+        placeholder: true,
+        details: [
+          "A decade of prayers folded into paper.",
+          "May you read it and weep with gratitude — because He did it all, and more.",
+        ],
+      },
     ],
   },
   {
