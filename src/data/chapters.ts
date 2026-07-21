@@ -62,8 +62,38 @@ export const chapters: Chapter[] = [
     theme: "The people whose love helped shape who you are.",
     closing: "You did not bloom alone. You were watered by love.",
     items: [
-      { id: "granny", title: "Granny", body: "The steady hands that first taught her prayer. The lullabies still hum in her heart.", placeholder: true },
-      { id: "sister", title: "Sister", body: "The first friend. The forever friend. The one who shares the same stories and the same blood.", placeholder: true },
+      {
+        id: "granny",
+        title: "Granny",
+        body: "The steady hands that first taught her prayer. The lullabies still hum in her heart.",
+        placeholder: true,
+        details: [
+          "She was the first altar in your life — the place you learned that God listens.",
+          "Her kitchen smelled of Sunday and psalms. Her hands folded yours into your first 'amen'.",
+          "Every quiet strength you carry into a courtroom, a nursery, a prayer — she planted it first.",
+        ],
+        keepsakes: [
+          { label: "A lullaby", note: "the one she hummed when the house was dark" },
+          { label: "A verse", note: "Proverbs 31 — the woman she was, the woman she prayed you'd be" },
+          { label: "A promise", note: "'The Lord will keep you.'" },
+        ],
+      },
+      {
+        id: "sister",
+        title: "Sister",
+        body: "The first friend. The forever friend. The one who shares the same stories and the same blood.",
+        placeholder: true,
+        details: [
+          "The one who remembers the same childhood — the same hallway, the same laughter, the same rain.",
+          "The witness. The keeper of secrets that never needed telling out loud.",
+          "This whole journal is written from her — every page a small love letter that says, 'I see you.'",
+        ],
+        keepsakes: [
+          { label: "Shared song", note: "the one we still know every word of" },
+          { label: "A memory", note: "two little girls, one blanket fort, endless plans" },
+          { label: "A prayer", note: "that God keep us close, all our days" },
+        ],
+      },
       { id: "mentor", title: "A Mentor", body: "One who saw what she could not yet see in herself." },
       { id: "add-yours", title: "Add Another Name", body: "A blossom left blank — for a name you would like to plant here." },
     ],
