@@ -6,6 +6,8 @@ export interface ChapterItem {
   scripture?: string;
   image?: string;
   placeholder?: boolean;
+  details?: string[];
+  keepsakes?: { label: string; note: string }[];
 }
 
 export interface Chapter {
@@ -62,8 +64,6 @@ export const chapters: Chapter[] = [
     items: [
       { id: "granny", title: "Granny", body: "The steady hands that first taught her prayer. The lullabies still hum in her heart.", placeholder: true },
       { id: "sister", title: "Sister", body: "The first friend. The forever friend. The one who shares the same stories and the same blood.", placeholder: true },
-      { id: "mother", title: "Mother", body: "The woman whose love became her first picture of grace." },
-      { id: "father", title: "Father", body: "Strength, steadiness, a quiet kind of love." },
       { id: "mentor", title: "A Mentor", body: "One who saw what she could not yet see in herself." },
       { id: "add-yours", title: "Add Another Name", body: "A blossom left blank — for a name you would like to plant here." },
     ],
