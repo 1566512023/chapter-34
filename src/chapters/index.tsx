@@ -510,48 +510,64 @@ function Dreams({ ch }: { ch: Chapter }) {
 /* ---------- 11. Memories — library shelves by year ---------- */
 function Memories({ ch }: { ch: Chapter }) {
   const r = useReveal();
+  const items = ch.items ?? [];
+  const colors = [
+    "oklch(0.8 0.06 20)",   // blush
+    "oklch(0.82 0.05 60)",  // champagne
+    "oklch(0.85 0.03 90)",  // ivory
+    "oklch(0.78 0.05 145)", // soft sage
+    "oklch(0.78 0.06 300)", // muted lavender
+    "oklch(0.83 0.07 40)",  // dusty rose
+  ];
   return (
     <ChapterFrame
       number={ch.number}
       title={ch.title}
       theme={ch.theme}
       bg={bgLibrary}
-      overlay="linear-gradient(to bottom, oklch(0.1 0.03 40 / 0.55), oklch(0.05 0.02 30 / 0.75))"
+      overlay="linear-gradient(to bottom, oklch(0.9 0.03 40 / 0.35), oklch(0.75 0.04 30 / 0.55))"
       closing={ch.closing}
       next={nextId(ch.id)}
     >
-      <div className="mx-auto max-w-4xl space-y-8">
-        {[ch.items!.slice(0, 4), ch.items!.slice(4)].map((row, ri) => (
-          <div key={ri} className="relative">
-            <div className="flex items-end justify-center gap-3">
-              {row.map((it, i) => {
-                const colors = ["oklch(0.35 0.1 25)", "oklch(0.3 0.08 45)", "oklch(0.4 0.1 60)", "oklch(0.25 0.06 260)"];
-                const bg = colors[i % colors.length];
-                return (
-                  <button
-                    key={it.id}
-                    type="button"
-                    onClick={() => r.open(it)}
-                    style={{ background: bg, animationDelay: `${(ri * 4 + i) * 80}ms` }}
-                    className="ink-in group relative flex h-52 w-16 flex-col items-center justify-between rounded-sm border border-black/40 py-4 shadow-[inset_0_0_20px_rgba(0,0,0,0.4)] transition-transform hover:-translate-y-2"
-                  >
-                    <span className="font-display text-[0.6rem] uppercase tracking-widest text-[oklch(0.85_0.13_82)]">
-                      Album
-                    </span>
-                    <span
-                      className="font-display text-lg italic text-[oklch(0.9_0.08_82)]"
-                      style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
-                    >
-                      {it.title}
-                    </span>
-                    <span className="font-display text-[0.6rem] text-[oklch(0.85_0.13_82_/_0.7)]">✦</span>
-                  </button>
-                );
-              })}
-            </div>
-            <div className="mt-1 h-2 rounded-sm bg-gradient-to-b from-[oklch(0.35_0.07_40)] to-[oklch(0.2_0.05_40)] shadow-md" />
-          </div>
-        ))}
+      <div className="mx-auto max-w-5xl">
+        <p className="mb-6 text-center font-hand text-lg text-[oklch(0.4_0.05_40)]">
+          Yearly albums, gathered on the shelf. Each one a little chapter of God's faithfulness.
+        </p>
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-6">
+          {items.map((it, i) => {
+            const bg = colors[i % colors.length];
+            const isChapter34 = it.id === "2026";
+            const isFuture = it.placeholder;
+            return (
+              <button
+                key={it.id}
+                type="button"
+                onClick={() => r.open(it)}
+                style={{
+                  background: isFuture
+                    ? "repeating-linear-gradient(45deg, oklch(0.95 0.02 60 / 0.4), oklch(0.95 0.02 60 / 0.4) 6px, oklch(0.85 0.03 60 / 0.4) 6px, oklch(0.85 0.03 60 / 0.4) 12px)"
+                    : bg,
+                  animationDelay: `${i * 60}ms`,
+                }}
+                className={`ink-in group relative flex aspect-[3/4] flex-col items-center justify-between rounded-sm border p-3 text-center shadow-[0_10px_20px_rgba(0,0,0,0.15)] transition-transform hover:-translate-y-2 ${
+                  isChapter34
+                    ? "border-[oklch(0.7_0.13_75)] ring-2 ring-[oklch(0.85_0.13_78_/_0.5)] shadow-[0_0_40px_oklch(0.85_0.13_78_/_0.35)]"
+                    : "border-[oklch(0.55_0.05_40_/_0.35)]"
+                }`}
+              >
+                <span className="font-display text-[0.55rem] uppercase tracking-[0.3em] text-[oklch(0.4_0.06_40)]">
+                  📖 Album
+                </span>
+                <span className="font-display text-2xl italic text-[oklch(0.3_0.06_40)]">
+                  {it.title.split(" —")[0]}
+                </span>
+                <span className="font-display text-[0.55rem] uppercase tracking-[0.3em] text-[oklch(0.4_0.06_40)]">
+                  {isChapter34 ? "Chapter 34" : isFuture ? "waiting" : "open ›"}
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
       <RevealModal item={r.item} onClose={r.close} />
     </ChapterFrame>
