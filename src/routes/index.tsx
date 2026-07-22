@@ -30,7 +30,7 @@ function Index() {
   };
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0f0a05]">
+    <main className="relative min-h-screen w-full overflow-hidden" style={{ background: "radial-gradient(ellipse at center, oklch(0.94 0.03 30), oklch(0.85 0.06 20))" }}>
       {/* Desk photograph */}
       <img
         src={deskScene}
