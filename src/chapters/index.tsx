@@ -160,8 +160,9 @@ function ThusFar({ ch }: { ch: Chapter }) {
 function Garden({ ch }: { ch: Chapter }) {
   const r = useReveal();
   const positions = [
-    { top: "18%", left: "12%" }, { top: "55%", left: "22%" }, { top: "30%", left: "38%" },
-    { top: "68%", left: "50%" }, { top: "22%", left: "68%" }, { top: "58%", left: "82%" },
+    { top: "16%", left: "10%" }, { top: "52%", left: "18%" }, { top: "28%", left: "32%" },
+    { top: "70%", left: "42%" }, { top: "22%", left: "54%" }, { top: "60%", left: "62%" },
+    { top: "36%", left: "72%" }, { top: "72%", left: "82%" }, { top: "18%", left: "84%" },
   ];
   return (
     <ChapterFrame
@@ -169,15 +170,16 @@ function Garden({ ch }: { ch: Chapter }) {
       title={ch.title}
       theme={ch.theme}
       bg={bgGarden}
-      overlay="linear-gradient(to bottom, oklch(0.98 0.03 90 / 0.15), oklch(0.85 0.08 100 / 0.35))"
-      textClass="text-[oklch(0.25_0.08_150)]"
-      accentClass="text-[oklch(0.35_0.15_15)]"
+      overlay="linear-gradient(to bottom, oklch(0.98 0.02 20 / 0.25), oklch(0.9 0.05 15 / 0.4))"
+      textClass="text-[oklch(0.3_0.06_20)]"
+      accentClass="text-[oklch(0.5_0.12_20)]"
       closing={ch.closing}
       next={nextId(ch.id)}
     >
-      <div className="relative mx-auto h-[60vh] w-full max-w-4xl rounded-sm border border-[oklch(0.35_0.15_15_/_0.25)] bg-white/20 backdrop-blur-[2px]">
+      <div className="relative mx-auto h-[62vh] w-full max-w-4xl rounded-sm border border-[oklch(0.55_0.12_20_/_0.25)] bg-white/30 backdrop-blur-[2px]">
         {ch.items!.map((it, i) => {
           const pos = positions[i % positions.length]!;
+          const isBlank = it.id.startsWith("blank-");
           return (
             <button
               key={it.id}
@@ -189,20 +191,28 @@ function Garden({ ch }: { ch: Chapter }) {
             >
               <span
                 className="block h-10 w-10 rounded-full transition-transform group-hover:scale-125"
-                style={{
-                  background: "radial-gradient(circle at 30% 30%, oklch(0.85 0.18 15), oklch(0.55 0.22 15))",
-                  boxShadow: "0 0 20px oklch(0.75 0.2 15 / 0.6), inset 0 -4px 8px oklch(0.35 0.15 15 / 0.4)",
-                }}
+                style={
+                  isBlank
+                    ? {
+                        background: "radial-gradient(circle at 30% 30%, oklch(0.98 0.02 20 / 0.55), oklch(0.85 0.04 20 / 0.35))",
+                        border: "1px dashed oklch(0.55 0.1 20 / 0.6)",
+                        boxShadow: "0 0 12px oklch(0.9 0.05 20 / 0.35)",
+                      }
+                    : {
+                        background: "radial-gradient(circle at 30% 30%, oklch(0.92 0.09 20), oklch(0.75 0.14 15))",
+                        boxShadow: "0 0 20px oklch(0.88 0.12 20 / 0.55), inset 0 -4px 8px oklch(0.45 0.12 15 / 0.35)",
+                      }
+                }
               />
-              <span className="mt-2 block whitespace-nowrap font-hand text-sm text-[oklch(0.2_0.1_150)] group-hover:text-[oklch(0.35_0.18_15)]">
-                {it.title}
+              <span className="mt-2 block whitespace-nowrap font-hand text-sm text-[oklch(0.3_0.08_20)] group-hover:text-[oklch(0.5_0.14_20)]">
+                {isBlank ? "✨ __________" : it.title}
               </span>
             </button>
           );
         })}
       </div>
-      <p className="mt-6 text-center font-hand text-lg text-[oklch(0.3_0.1_150)]">
-        Touch a bloom to unfold a memory.
+      <p className="mt-6 text-center font-hand text-lg text-[oklch(0.35_0.08_20)]">
+        Touch a bloom to unfold a memory. Blank blossoms wait for names still to come.
       </p>
       <RevealModal item={r.item} onClose={r.close} accent="oklch(0.55 0.22 15)" />
     </ChapterFrame>
