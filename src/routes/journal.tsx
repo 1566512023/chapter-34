@@ -26,12 +26,12 @@ function JournalPage() {
       className="relative min-h-screen w-full px-6 py-16 sm:px-10"
       style={{
         background:
-          "radial-gradient(ellipse at top, oklch(0.18 0.04 45), oklch(0.08 0.02 30) 70%)",
+          "radial-gradient(ellipse at top, oklch(0.97 0.03 80), oklch(0.9 0.05 20) 70%)",
       }}
     >
       <Link
         to="/"
-        className="absolute left-6 top-6 font-display text-xs italic uppercase tracking-[0.3em] text-[oklch(0.85_0.08_82_/_0.7)] hover:text-[oklch(0.85_0.13_82)]"
+        className="absolute left-6 top-6 font-display text-xs italic uppercase tracking-[0.3em] text-[oklch(0.5_0.08_25_/_0.75)] hover:text-[oklch(0.4_0.1_25)]"
       >
         ‹ close the journal
       </Link>
@@ -56,22 +56,22 @@ function JournalPage() {
         </section>
 
         <header className="mb-12 text-center">
-          <p className="font-display text-xs uppercase tracking-[0.5em] text-[oklch(0.85_0.13_82)]">
+          <p className="font-display text-xs uppercase tracking-[0.5em] text-[oklch(0.55_0.1_25)]">
             Table of Contents
           </p>
-          <h1 className="mt-4 font-display text-4xl italic text-[oklch(0.95_0.05_82)] sm:text-5xl">
+          <h1 className="mt-4 font-display text-4xl italic text-[oklch(0.35_0.08_25)] sm:text-5xl">
             Chapter 34
           </h1>
-          <p className="mt-3 font-hand text-lg text-[oklch(0.85_0.08_82_/_0.75)]">
+          <p className="mt-3 font-hand text-lg text-[oklch(0.45_0.08_25)]">
             Every chapter is a world of its own. Step inside.
           </p>
           {bookmark && (
-            <p className="mt-6 font-display text-sm italic text-[oklch(0.85_0.13_82)]">
+            <p className="mt-6 font-display text-sm italic text-[oklch(0.55_0.1_25)]">
               Bookmark saved at{" "}
               <Link
                 to="/chapter/$id"
                 params={{ id: bookmark }}
-                className="underline decoration-[oklch(0.85_0.13_82_/_0.5)] underline-offset-4"
+                className="underline decoration-[oklch(0.7_0.11_60_/_0.6)] underline-offset-4"
               >
                 {chapters.find((c) => c.id === bookmark)?.title ?? "your last page"}
               </Link>
@@ -85,16 +85,16 @@ function JournalPage() {
               <Link
                 to="/chapter/$id"
                 params={{ id: c.id }}
-                className="ink-in group flex items-baseline gap-4 border-b border-[oklch(0.85_0.13_82_/_0.15)] py-4 transition-all hover:border-[oklch(0.85_0.13_82_/_0.6)]"
+                className="ink-in group flex items-baseline gap-4 border-b border-[oklch(0.7_0.09_60_/_0.35)] py-4 transition-all hover:border-[oklch(0.6_0.12_25)]"
                 style={{ animationDelay: `${i * 40}ms` }}
               >
-                <span className="font-display text-xs uppercase tracking-[0.3em] text-[oklch(0.85_0.13_82_/_0.7)]">
+                <span className="font-display text-xs uppercase tracking-[0.3em] text-[oklch(0.55_0.1_25_/_0.85)]">
                   {c.number}
                 </span>
-                <span className="flex-1 font-display text-xl italic text-[oklch(0.95_0.05_82)] group-hover:text-[oklch(0.9_0.13_82)]">
+                <span className="flex-1 font-display text-xl italic text-[oklch(0.35_0.08_25)] group-hover:text-[oklch(0.5_0.12_25)]">
                   {c.title}
                 </span>
-                <span className="font-display text-[oklch(0.85_0.13_82_/_0.6)] group-hover:text-[oklch(0.85_0.13_82)]">
+                <span className="font-display text-[oklch(0.6_0.1_60)] group-hover:text-[oklch(0.5_0.12_25)]">
                   ›
                 </span>
               </Link>
