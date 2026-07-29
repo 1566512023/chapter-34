@@ -18,7 +18,7 @@ export function Dust({ count = 30 }: { count?: number }) {
       {particles.map((p) => (
         <span
           key={p.key}
-          className="dust absolute rounded-full bg-[oklch(0.92_0.08_82_/_0.55)] blur-[1px]"
+          className="dust absolute rounded-full bg-[oklch(0.98_0.05_320_/_0.6)] blur-[1px]"
           style={{
             left: p.left,
             width: `${p.size}px`,
@@ -33,24 +33,32 @@ export function Dust({ count = 30 }: { count?: number }) {
   );
 }
 
-/** Warm vignette + morning-light wash overlaid on the desk photograph. */
+/** Bright, girly light-wash overlaid on the landing page. */
 export function DeskAtmosphere() {
   return (
     <>
-      {/* Sunlight from left */}
+      {/* Soft pink glow */}
       <div
         className="pointer-events-none absolute inset-0 mix-blend-screen"
         style={{
           background:
-            "radial-gradient(ellipse 60% 80% at 8% 20%, oklch(0.95 0.12 82 / 0.35), transparent 60%)",
+            "radial-gradient(ellipse 70% 90% at 20% 15%, oklch(0.98 0.06 340 / 0.55), transparent 65%)",
         }}
       />
-      {/* Deep vignette to focus attention on the journal */}
+      {/* Blue-lavender wash from the opposite side */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 55% 55% at 50% 60%, transparent 30%, oklch(0.05 0.02 40 / 0.6) 100%)",
+            "radial-gradient(ellipse 60% 70% at 85% 80%, oklch(0.9 0.06 240 / 0.35), transparent 70%)",
+        }}
+      />
+      {/* Very soft feathered edge (no dark vignette) */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 80% at 50% 50%, transparent 55%, oklch(0.95 0.03 320 / 0.35) 100%)",
         }}
       />
     </>

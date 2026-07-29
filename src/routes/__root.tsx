@@ -16,6 +16,7 @@ import { KeepsakeInventory } from "@/components/KeepsakeInventory";
 import { PenEasterEgg } from "@/components/PenEasterEgg";
 import { JournalBackButton } from "@/components/JournalBackButton";
 import { ShamarCompanion } from "@/components/ShamarCompanion";
+import { MotionProvider } from "@/lib/motion";
 
 function NotFoundComponent() {
   return (
@@ -136,13 +137,15 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
-      <JournalNav />
-      <KeepsakeInventory />
-      <JournalBackButton />
-      <ShamarCompanion />
-      <PenEasterEgg />
+      <MotionProvider>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+        <JournalNav />
+        <KeepsakeInventory />
+        <JournalBackButton />
+        <ShamarCompanion />
+        <PenEasterEgg />
+      </MotionProvider>
     </QueryClientProvider>
   );
 }

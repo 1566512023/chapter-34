@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { chapters } from "@/data/chapters";
+import { useReducedMotion } from "@/lib/motion";
 
 const extras = [
   { label: "Home", to: "/" as const, params: undefined },
@@ -11,6 +12,7 @@ export function JournalNav() {
   const [open, setOpen] = useState(false);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const panelRef = useRef<HTMLDivElement>(null);
+  const { reduced, setReduced } = useReducedMotion();
 
   // Close on route change
   useEffect(() => {
@@ -180,6 +182,15 @@ export function JournalNav() {
         </nav>
 
         <footer className="relative border-t border-[oklch(0.75_0.1_60_/_0.35)] px-6 py-4 text-center">
+          <label className="mb-3 flex items-center justify-center gap-2 font-display text-[0.65rem] uppercase tracking-[0.3em] text-[oklch(0.45_0.1_25)]">
+            <input
+              type="checkbox"
+              checked={reduced}
+              onChange={(e) => setReduced(e.target.checked)}
+              className="h-3.5 w-3.5 accent-[oklch(0.65_0.14_25)]"
+            />
+            <span>Reduce motion</span>
+          </label>
           <p
             className="font-hand text-xs"
             style={{ color: "oklch(0.5 0.08 25 / 0.85)" }}

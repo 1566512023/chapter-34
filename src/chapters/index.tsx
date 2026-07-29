@@ -3,6 +3,8 @@ import { Link } from "@tanstack/react-router";
 import { chapters, type Chapter, type ChapterItem } from "@/data/chapters";
 import { ChapterFrame } from "@/components/chapter/ChapterFrame";
 import { RevealModal } from "@/components/chapter/RevealModal";
+import { AddCardModal } from "@/components/AddCardModal";
+import { useDreams, usePrayers, usePeople } from "@/lib/user-content";
 
 import bgSunrise from "@/assets/bg-sunrise.jpg";
 import bgPath from "@/assets/bg-path.jpg";
@@ -159,11 +161,33 @@ function ThusFar({ ch }: { ch: Chapter }) {
 /* ---------- 3. Garden — clickable flowers ---------- */
 function Garden({ ch }: { ch: Chapter }) {
   const r = useReveal();
+  const { items: people, add, authed } = usePeople();
+  const [addOpen, setAddOpen] = useState(false);
   const positions = [
     { top: "16%", left: "10%" }, { top: "52%", left: "18%" }, { top: "28%", left: "32%" },
     { top: "70%", left: "42%" }, { top: "22%", left: "54%" }, { top: "60%", left: "62%" },
     { top: "36%", left: "72%" }, { top: "72%", left: "82%" }, { top: "18%", left: "84%" },
   ];
+  const extraPositions = [
+    { top: "44%", left: "48%" }, { top: "84%", left: "22%" }, { top: "10%", left: "68%" },
+    { top: "58%", left: "88%" }, { top: "80%", left: "62%" },
+  ];
+  const seedItems = ch.items ?? [];
+  const filled = people.slice(0, seedItems.filter((it) => it.id.startsWith("blank-")).length);
+  // Replace blank placeholders with user-added people first, in order
+  let blankIdx = 0;
+  const merged: ChapterItem[] = seedItems.map((it) => {
+    if (!it.id.startsWith("blank-")) return it;
+    const p = filled[blankIdx++];
+    if (!p) return it;
+    return {
+      id: `person-${p.id}`,
+      title: p.name,
+      subtitle: p.relation ?? "Someone dear",
+      body: p.note ?? "A bloom in your garden.",
+    };
+  });
+  const overflow = people.slice(filled.length);
   return (
     <ChapterFrame
       number={ch.number}
@@ -177,7 +201,7 @@ function Garden({ ch }: { ch: Chapter }) {
       next={nextId(ch.id)}
     >
       <div className="relative mx-auto h-[62vh] w-full max-w-4xl rounded-sm border border-[oklch(0.55_0.12_20_/_0.25)] bg-white/30 backdrop-blur-[2px]">
-        {ch.items!.map((it, i) => {
+        {merged.map((it, i) => {
           const pos = positions[i % positions.length]!;
           const isBlank = it.id.startsWith("blank-");
           return (
@@ -210,11 +234,65 @@ function Garden({ ch }: { ch: Chapter }) {
             </button>
           );
         })}
+        {overflow.map((p, i) => {
+          const pos = extraPositions[i % extraPositions.length]!;
+          const item: ChapterItem = {
+            id: `person-${p.id}`,
+            title: p.name,
+            subtitle: p.relation ?? "Someone dear",
+            body: p.note ?? "A bloom in your garden.",
+          };
+          return (
+            <button
+              key={p.id}
+              type="button"
+              onClick={() => r.open(item)}
+              className="group absolute -translate-x-1/2 -translate-y-1/2"
+              style={{ top: pos.top, left: pos.left }}
+              aria-label={p.name}
+            >
+              <span
+                className="block h-10 w-10 rounded-full transition-transform group-hover:scale-125"
+                style={{
+                  background: "radial-gradient(circle at 30% 30%, oklch(0.95 0.08 320), oklch(0.75 0.13 320))",
+                  boxShadow: "0 0 20px oklch(0.88 0.12 320 / 0.55)",
+                }}
+              />
+              <span className="mt-2 block whitespace-nowrap font-hand text-sm text-[oklch(0.3_0.08_320)]">
+                {p.name}
+              </span>
+            </button>
+          );
+        })}
       </div>
-      <p className="mt-6 text-center font-hand text-lg text-[oklch(0.35_0.08_20)]">
-        Touch a bloom to unfold a memory. Blank blossoms wait for names still to come.
-      </p>
+      <div className="mt-6 flex flex-col items-center gap-3">
+        <p className="text-center font-hand text-lg text-[oklch(0.35_0.08_20)]">
+          Touch a bloom to unfold a memory. Blank blossoms wait for names still to come.
+        </p>
+        <button
+          type="button"
+          onClick={() => setAddOpen(true)}
+          className="rounded-full border border-[oklch(0.55_0.15_20)] px-5 py-2 font-display text-xs italic uppercase tracking-[0.3em] text-[oklch(0.5_0.15_20)] transition hover:bg-[oklch(0.95_0.05_20)]"
+        >
+          + Add a person to your garden
+        </button>
+      </div>
       <RevealModal item={r.item} onClose={r.close} accent="oklch(0.55 0.22 15)" />
+      <AddCardModal
+        open={addOpen}
+        onClose={() => setAddOpen(false)}
+        onSubmit={async (v) => add({ name: v.name, relation: v.relation, note: v.note })}
+        title="Add a person to your garden"
+        subtitle="A new bloom"
+        accent="oklch(0.55 0.15 20)"
+        submitLabel="Plant this bloom"
+        authed={authed}
+        fields={[
+          { name: "name", label: "Their name", required: true, maxLength: 80 },
+          { name: "relation", label: "Who they are to you", placeholder: "e.g. Mentor, Aunt, Prayer partner", maxLength: 80 },
+          { name: "note", label: "A memory or thank-you", textarea: true, maxLength: 500 },
+        ]}
+      />
     </ChapterFrame>
   );
 }
@@ -463,6 +541,24 @@ function Faithfulness({ ch }: { ch: Chapter }) {
 /* ---------- 10. Dreams — vision board ---------- */
 function Dreams({ ch }: { ch: Chapter }) {
   const r = useReveal();
+  const { items: dreams, add, authed } = useDreams();
+  const [addOpen, setAddOpen] = useState(false);
+  const userItems: ChapterItem[] = dreams.map((d) => ({
+    id: `dream-${d.id}`,
+    title: d.title,
+    subtitle: d.promise ?? "A dream you're keeping",
+    body: d.note ?? "",
+  }));
+  // Replace placeholder cards with user's own dreams, in order
+  const seed = ch.items ?? [];
+  let uIdx = 0;
+  const merged: ChapterItem[] = seed.map((it) => {
+    if (!it.placeholder) return it;
+    const next = userItems[uIdx++];
+    return next ?? it;
+  });
+  const overflow = userItems.slice(uIdx);
+  const all = [...merged, ...overflow];
   return (
     <ChapterFrame
       number={ch.number}
@@ -476,7 +572,7 @@ function Dreams({ ch }: { ch: Chapter }) {
       next={nextId(ch.id)}
     >
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        {ch.items!.map((it, i) => {
+        {all.map((it, i) => {
           const rot = (i % 5) - 2;
           const fulfilled = it.subtitle?.toLowerCase().includes("fulfilled");
           return (
@@ -501,8 +597,31 @@ function Dreams({ ch }: { ch: Chapter }) {
             </button>
           );
         })}
+        <button
+          type="button"
+          onClick={() => setAddOpen(true)}
+          className="group flex aspect-square flex-col items-center justify-center rounded-sm border-2 border-dashed border-[oklch(0.55_0.15_35)] bg-white/40 p-4 text-center font-display text-[oklch(0.4_0.15_35)] transition hover:bg-white/70"
+        >
+          <span className="text-3xl italic">+</span>
+          <span className="mt-2 text-xs uppercase tracking-[0.3em]">Add a dream</span>
+        </button>
       </div>
       <RevealModal item={r.item} onClose={r.close} accent="oklch(0.55 0.18 35)" />
+      <AddCardModal
+        open={addOpen}
+        onClose={() => setAddOpen(false)}
+        onSubmit={async (v) => add({ title: v.title, promise: v.promise, note: v.note })}
+        title="Pin a new dream to the board"
+        subtitle="A dream God placed in your heart"
+        accent="oklch(0.55 0.18 35)"
+        submitLabel="Pin it to the board"
+        authed={authed}
+        fields={[
+          { name: "title", label: "The dream", required: true, maxLength: 120 },
+          { name: "promise", label: "A promise to remember", placeholder: "A verse or word", maxLength: 300 },
+          { name: "note", label: "Why it matters", textarea: true, maxLength: 1000 },
+        ]}
+      />
     </ChapterFrame>
   );
 }
@@ -614,6 +733,15 @@ function LoveLetter({ ch }: { ch: Chapter }) {
 /* ---------- 13. Prayer Room ---------- */
 function Prayer({ ch }: { ch: Chapter }) {
   const r = useReveal();
+  const { items: prayers, add, authed } = usePrayers();
+  const [addOpen, setAddOpen] = useState(false);
+  const extraItems: ChapterItem[] = prayers.map((p) => ({
+    id: `prayer-${p.id}`,
+    title: p.title,
+    subtitle: p.request ?? "A prayer you're lifting",
+    body: p.note ?? "",
+  }));
+  const all = [...(ch.items ?? []), ...extraItems];
   return (
     <ChapterFrame
       number={ch.number}
@@ -625,7 +753,7 @@ function Prayer({ ch }: { ch: Chapter }) {
       next={nextId(ch.id)}
     >
       <div className="mx-auto grid max-w-3xl grid-cols-2 gap-6 sm:grid-cols-3">
-        {ch.items!.map((it, i) => (
+        {all.map((it, i) => (
           <button
             key={it.id}
             type="button"
@@ -643,8 +771,31 @@ function Prayer({ ch }: { ch: Chapter }) {
             </h3>
           </button>
         ))}
+        <button
+          type="button"
+          onClick={() => setAddOpen(true)}
+          className="group relative flex flex-col items-center justify-center gap-3 rounded-sm border-2 border-dashed border-[oklch(0.75_0.15_60_/_0.5)] bg-[oklch(0.1_0.03_40_/_0.2)] p-6 text-center font-display italic text-[oklch(0.95_0.08_82)] transition hover:border-[oklch(0.85_0.15_60)]"
+        >
+          <span className="text-2xl">+</span>
+          <span className="text-sm">Light a new candle</span>
+        </button>
       </div>
       <RevealModal item={r.item} onClose={r.close} />
+      <AddCardModal
+        open={addOpen}
+        onClose={() => setAddOpen(false)}
+        onSubmit={async (v) => add({ title: v.title, request: v.request, note: v.note })}
+        title="Light a new candle"
+        subtitle="A prayer to keep"
+        accent="oklch(0.55 0.18 60)"
+        submitLabel="Light this candle"
+        authed={authed}
+        fields={[
+          { name: "title", label: "The prayer's name", required: true, maxLength: 120 },
+          { name: "request", label: "What you're asking", maxLength: 300 },
+          { name: "note", label: "A verse or reflection", textarea: true, maxLength: 1000 },
+        ]}
+      />
     </ChapterFrame>
   );
 }
@@ -702,6 +853,7 @@ function Verdict({ ch }: { ch: Chapter }) {
 /* ---------- 15. Legacy — family tree + time capsule ---------- */
 function Legacy({ ch }: { ch: Chapter }) {
   const r = useReveal();
+  const { items: people } = usePeople();
   return (
     <ChapterFrame
       number={ch.number}
@@ -731,6 +883,29 @@ function Legacy({ ch }: { ch: Chapter }) {
                 <span className="text-[oklch(0.4_0.15_35)]">›</span>
               </button>
             ))}
+            {people.map((p, i) => {
+              const item: ChapterItem = {
+                id: `person-${p.id}`,
+                title: p.name,
+                subtitle: p.relation ?? "Someone dear",
+                body: p.note ?? "",
+              };
+              return (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => r.open(item)}
+                  style={{ animationDelay: `${(i + 4) * 100}ms` }}
+                  className="ink-in flex items-center justify-between rounded-sm border border-[oklch(0.6_0.14_320_/_0.4)] bg-[oklch(0.98_0.04_320_/_0.7)] px-5 py-3 text-left transition-all hover:-translate-x-1"
+                >
+                  <span className="font-display italic text-[oklch(0.35_0.1_320)]">
+                    {p.name}
+                    {p.relation ? <span className="ml-2 text-xs opacity-70">· {p.relation}</span> : null}
+                  </span>
+                  <span className="text-[oklch(0.5_0.15_320)]">✿</span>
+                </button>
+              );
+            })}
           </div>
         </section>
         <section>

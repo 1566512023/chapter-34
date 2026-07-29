@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { chapters } from "@/data/chapters";
 import { writeBookmark } from "@/lib/bookmark";
 import { chapterComponents } from "@/chapters";
+import { SoundscapePlayer } from "@/components/SoundscapePlayer";
 
 export const Route = createFileRoute("/chapter/$id")({
   loader: ({ params }) => {
@@ -33,7 +34,12 @@ function ChapterPage() {
   useEffect(() => writeBookmark(chapter.id), [chapter.id]);
   const Component = chapterComponents[chapter.id];
   if (!Component) return <ChapterMissing />;
-  return <Component ch={chapter} />;
+  return (
+    <>
+      <Component ch={chapter} />
+      <SoundscapePlayer chapterId={chapter.id} />
+    </>
+  );
 }
 
 function ChapterMissing() {
