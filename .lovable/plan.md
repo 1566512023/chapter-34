@@ -1,42 +1,54 @@
-## Website Revisions Plan
+A large multi-part change. Grouped so you can approve the whole set or trim.
 
-A large multi-part update. I'll group work into cohesive phases so nothing regresses.
+## 1. Bright, girly landing page (no brown, no candles)
 
-### 1. Content & Data (`src/data/chapters.ts`)
-- **Garden**: add Granny, Sister, Zane, plus 5 blank "✨ __________" placeholder items rendered as elegant empty slots.
-- **Woman You Have Become**: reorder pillars → Faith, Mother, Partner, Sister, Lawyer, Business Owner, Leader.
-- **Dreams**: remove "Kingdom Impact"; add blank dream cards (My Next Dream, Another Prayer, A Place I'd Love to Visit, A Future Goal, two blanks).
-- **Timeline (Thus Far)**: change 1991 → 1992 anywhere it appears; remove the standalone 2026 "Welcome Home, Pen" milestone (moves to Book of Memories).
-- **Book of Memories**: replace existing shelves with chronological yearly albums 2010 → 2028+. 2026 album titled "2026 – Chapter 34" and contains: Welcome Home Pen, Birthday Memories, Family Moments, Journal Entries, Videos, Voice Notes, Answered Prayers, Business Milestones, Photo Gallery.
-- **Chapter swap**: swap chapter 6 and 7 so order becomes Little Hands Big Love (6), Called With Purpose (7). Keep existing IDs stable so bookmarks/inventory don't break; only swap `number` labels and array order.
+- Rework `src/routes/index.tsx` background from radial brown/rose to a bright blush → sky-blue → lavender wash with soft cloud gradient. Remove the "candle" copy and the amber "opening flash" — replace with a soft rose+sky bloom.
+- Regenerate the journal cover as a **pink velvet** journal (default) with soft-gold "Phindile · Chapter 34" foil, keeping the ribbon in coral. Also generate an alt **sky-blue** cover.
+- Toggle above the journal: "Pink / Blue" — persists in localStorage so revisits remember the pick.
+- Recolor the desk atmosphere overlay from warm amber to cool ivory/pearl highlights (`AmbientDesk.tsx`).
+- Tweak `--background`, journal breathe drop-shadow, and the "returning" caption color so nothing reads brown.
 
-### 2. Chapter Registry (`src/chapters/index.tsx`)
-- Garden: render placeholder people as ghosted, dashed-outline blooms.
-- Woman: render pillars in new order (data-driven — already reads from data).
-- Dreams: render blank cards with subtle "add later" styling.
-- Book of Memories: rework the shelf UI into year-labeled albums with sub-items; 2026 highlighted as "Chapter 34".
-- Ensure the Pen easter-egg still triggers from the 2026 album's "Welcome Home, Pen" item.
+## 2. Chapter soundscape controls
 
-### 3. Navigation
-- **Back button**: new persistent `<JournalBackButton>` mounted from `__root.tsx`. Hidden on `/`. Uses `router.history.back()` with graceful fallback to `/journal`. Styled as a folded page-corner / ribbon with handwritten "‹ previous page".
-- **JournalNav**: update TOC labels for swapped chapter order.
+- Add `src/components/SoundscapePlayer.tsx`: a small pill that lives inside `ChapterFrame` (top-right of the chapter viewport, below the global nav) with Play/Pause, mute, and a slim volume slider.
+- Ambient loops are chosen per chapter (birdsong for Garden, choir hum for Sanctuary, page-turn silence for Writing Room, etc.) via a map in `src/lib/soundscapes.ts`. Loops are lightweight CC0 mp3s stored in `public/audio/` — I'll generate them via ElevenLabs SFX (long-form ambient) once the ElevenLabs connector is linked; until then the player renders with an "audio coming soon" state and the mute/volume UI still works.
+- Volume, mute, and per-chapter enabled state persisted in localStorage; respected across navigation.
 
-### 4. Colour Palette & Visual Style (`src/styles.css`)
-- Replace dark leather palette with soft feminine luxury tokens: blush, dusty rose, champagne, ivory, warm cream, soft sage, muted lavender, soft gold.
-- Update paper texture, gold-text, journal cover, and background gradients used in journal.tsx, chapter frames, JournalNav, KeepsakeInventory, PenEasterEgg.
-- Keep animations and structure intact.
+## 3. Add-a-dream / add-a-prayer cards
 
-### 5. Shamar Companion
-- Add `src/lib/shamar.ts` with the system-prompt text and greeting/reflection helpers.
-- Add `src/components/ShamarCompanion.tsx`: a fixed, elegant floating companion (bottom-left) with the Shalom greeting, daily reflection card, and contextual suggestions based on current chapter path. Purely presentational (no AI backend wired yet) — offers Scripture suggestions, journaling prompts, and closing blessing from the provided prompt. Mount in `__root.tsx`.
+- New `src/lib/user-content.ts` (Supabase-backed) with tables `user_dreams` and `user_prayers` (RLS by `auth.uid()`), plus server fns to list/create/delete.
+- Migration creates both tables with grants + RLS.
+- In the Dreams chapter, each empty "✨ __________" slot becomes an "Add a dream" card that opens a journal-styled modal (title, promise/scripture, note). Saved cards render inline in the same handwritten style. Signed-out visitors see a "sign in to add" prompt linking to `/auth`.
+- Same pattern for a new Prayer Room add-a-prayer card (Chapter 13).
 
-### 6. Images
-- The existing chapter hero images are already photographic. No new AI illustrations. Note in code comments that any future image must be photographic/cinematic (no illustrations).
+## 4. "Add a person" for the Garden
 
-### 7. Verification
-- Typecheck build, load `/`, `/journal`, `/chapter/garden`, `/chapter/memories`, `/chapter/woman`, `/chapter/dreams` in Playwright and screenshot each.
+- Reuses the same server fn stack: table `user_people` (name, relation, note, bloom_color, chapter_placement).
+- The 5 blank "✨ __________" blooms in the Garden become "Add a person" buttons opening a small journal modal. On save the bloom fills with the given name and instantly appears in:
+  - Garden That Helped You Bloom (Chapter 3)
+  - Legacy Tree (Chapter 15 — new leaf on the tree)
+  - Memory Flowers (Chapter 11 — added to a "People who bloomed with me" strip in the 2026 album)
+- Delete/edit available from the bloom's reveal modal for the row's owner.
 
-### Technical notes
-- Chapter IDs remain unchanged to preserve localStorage bookmarks and keepsake inventory keys; only `number` and ordering change.
-- Palette swap is done via CSS variables so components inherit automatically; per-component inline `oklch()` values will be tuned to the new tokens where they exist.
-- Shamar is a UI-only companion in this pass; wiring to an AI Gateway can follow in a later request.
+## 5. Reduced-motion toggle
+
+- New `src/lib/motion.ts` (localStorage flag + `matchMedia('(prefers-reduced-motion)')` fallback) and a React context so any component can read `useReducedMotion()`.
+- Toggle lives in the `JournalNav` panel ("Gentle motion" switch) so it's reachable from every page.
+- When on: disable `journal-breathe`, `ribbon-sway`, `page-turn-*`, `pen-drive`, `dust`, `flicker`, and the opening flash; keep simple fades under 200ms. Applied via a `data-reduced-motion="true"` attribute on `<html>` and matching CSS overrides in `src/styles.css`.
+
+## 6. Sign-up fix for Phindile
+
+- Symptom likely = Supabase auth has "Enable signups" disabled. I'll call `supabase--configure_auth` to enable email signups and keep email confirmations on (Phindile will get a magic confirm link).
+- Also polish `/auth`: switch default `mode` to `signup` when the URL is `/auth?new=1`, and surface a clearer error when signups are disabled.
+
+## Technical notes
+
+- No new frameworks. All new tables use RLS `auth.uid() = user_id` with GRANTs for `authenticated` + `service_role` only.
+- Soundscape audio files added under `public/audio/` (no build changes).
+- Reduced motion is CSS-driven so it doesn't require component rewrites.
+- Landing color toggle and reduced-motion respect SSR by reading in `useEffect`.
+
+## Out of scope (ask if you want them)
+
+- Adding ambient audio for Chapters I haven't listed a mood for — I'll pick sensible defaults, but tell me if you want specific sounds per chapter.
+- Editing existing seeded dream/prayer/people copy — I'll leave your current entries as-is and only fill the blank slots.
