@@ -323,6 +323,25 @@
   animation: ink-in 1.4s ease-out both;
 }
 
+/* Reduced motion — user preference or system setting */
+html[data-reduced-motion="true"] *,
+html[data-reduced-motion="true"] *::before,
+html[data-reduced-motion="true"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+html[data-reduced-motion="true"] .pen-drive,
+html[data-reduced-motion="true"] .pen-car,
+html[data-reduced-motion="true"] .pen-trail,
+html[data-reduced-motion="true"] .dust,
+html[data-reduced-motion="true"] .candle-glow,
+html[data-reduced-motion="true"] .journal-breathe,
+html[data-reduced-motion="true"] .ribbon-sway {
+  animation: none !important;
+}
+
 /* Soft golden pulse for cover glow */
 @keyframes golden-pulse {
   0%, 100% { box-shadow: 0 0 0 oklch(0.72 0.13 78 / 0); }
