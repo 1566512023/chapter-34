@@ -73,6 +73,99 @@ export type Database = {
         }
         Relationships: []
       }
+      user_dreams: {
+        Row: {
+          created_at: string
+          id: string
+          note: string | null
+          promise: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          note?: string | null
+          promise?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          note?: string | null
+          promise?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_people: {
+        Row: {
+          bloom_color: string | null
+          created_at: string
+          id: string
+          name: string
+          note: string | null
+          relation: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          bloom_color?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          note?: string | null
+          relation?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          bloom_color?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          note?: string | null
+          relation?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_prayers: {
+        Row: {
+          created_at: string
+          id: string
+          note: string | null
+          request: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          note?: string | null
+          request?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          note?: string | null
+          request?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
