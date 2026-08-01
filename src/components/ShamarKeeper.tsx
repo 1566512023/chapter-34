@@ -275,7 +275,11 @@ function Field({
   );
 }
 
-function Area(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
+function Area(
+  props: React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+    ref?: React.Ref<HTMLTextAreaElement>;
+  },
+) {
   return (
     <textarea
       {...props}
