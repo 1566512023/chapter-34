@@ -16,6 +16,7 @@ import { KeepsakeInventory } from "@/components/KeepsakeInventory";
 import { PenEasterEgg } from "@/components/PenEasterEgg";
 import { JournalBackButton } from "@/components/JournalBackButton";
 import { ShamarCompanion } from "@/components/ShamarCompanion";
+import { ShamarKeeper } from "@/components/ShamarKeeper";
 import { MotionProvider } from "@/lib/motion";
 
 function NotFoundComponent() {
@@ -144,6 +145,7 @@ function RootComponent() {
         <KeepsakeInventory />
         <JournalBackButton />
         <ShamarCompanion />
+        <ShamarKeeper />
         <PenEasterEgg />
       </MotionProvider>
     </QueryClientProvider>

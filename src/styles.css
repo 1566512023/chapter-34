@@ -395,3 +395,11 @@ html[data-reduced-motion="true"] .ribbon-sway {
   opacity: 0;
   animation: pen-caption-in 6s ease-in-out forwards;
 }
+
+/* --- Shamar keeper button --- */
+@keyframes shamar-breathe {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 oklch(0.85 0.11 85 / 0.45), 0 10px 26px oklch(0.6 0.06 30 / 0.22); }
+  50% { transform: scale(1.045); box-shadow: 0 0 0 14px oklch(0.85 0.11 85 / 0), 0 14px 32px oklch(0.6 0.06 30 / 0.28); }
+}
+.shamar-breathe { animation: shamar-breathe 4.8s ease-in-out infinite; }
+html[data-reduced-motion="true"] .shamar-breathe { animation: none; }

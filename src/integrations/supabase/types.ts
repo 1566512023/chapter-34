@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      gratitude_entries: {
+        Row: {
+          body: string
+          category: string | null
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          category?: string | null
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          category?: string | null
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      journal_entries: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          scripture: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          scripture?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          scripture?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       shamar_messages: {
         Row: {
           created_at: string
@@ -103,6 +157,45 @@ export type Database = {
         }
         Relationships: []
       }
+      user_memories: {
+        Row: {
+          created_at: string
+          id: string
+          location: string | null
+          media_paths: string[]
+          memory_date: string | null
+          people: string[]
+          story: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          location?: string | null
+          media_paths?: string[]
+          memory_date?: string | null
+          people?: string[]
+          story?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          location?: string | null
+          media_paths?: string[]
+          memory_date?: string | null
+          people?: string[]
+          story?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_people: {
         Row: {
           bloom_color: string | null
@@ -145,6 +238,7 @@ export type Database = {
           title: string
           updated_at: string
           user_id: string
+          waiting: boolean
         }
         Insert: {
           created_at?: string
@@ -154,6 +248,7 @@ export type Database = {
           title: string
           updated_at?: string
           user_id: string
+          waiting?: boolean
         }
         Update: {
           created_at?: string
@@ -163,6 +258,7 @@ export type Database = {
           title?: string
           updated_at?: string
           user_id?: string
+          waiting?: boolean
         }
         Relationships: []
       }
