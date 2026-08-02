@@ -68,6 +68,87 @@ export type Database = {
         }
         Relationships: []
       }
+      memory_suggestion_dismissals: {
+        Row: {
+          created_at: string
+          id: string
+          suggestion_key: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          suggestion_key: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          suggestion_key?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      saved_scriptures: {
+        Row: {
+          created_at: string
+          favourite: boolean
+          id: string
+          journal_entry_id: string | null
+          prayer_id: string | null
+          reference: string
+          reflection: string | null
+          theme: string | null
+          translation: string
+          updated_at: string
+          user_id: string
+          verse_text: string
+        }
+        Insert: {
+          created_at?: string
+          favourite?: boolean
+          id?: string
+          journal_entry_id?: string | null
+          prayer_id?: string | null
+          reference: string
+          reflection?: string | null
+          theme?: string | null
+          translation?: string
+          updated_at?: string
+          user_id: string
+          verse_text: string
+        }
+        Update: {
+          created_at?: string
+          favourite?: boolean
+          id?: string
+          journal_entry_id?: string | null
+          prayer_id?: string | null
+          reference?: string
+          reflection?: string | null
+          theme?: string | null
+          translation?: string
+          updated_at?: string
+          user_id?: string
+          verse_text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_scriptures_journal_entry_id_fkey"
+            columns: ["journal_entry_id"]
+            isOneToOne: false
+            referencedRelation: "journal_entries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "saved_scriptures_prayer_id_fkey"
+            columns: ["prayer_id"]
+            isOneToOne: false
+            referencedRelation: "user_prayers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       shamar_messages: {
         Row: {
           created_at: string
@@ -157,8 +238,45 @@ export type Database = {
         }
         Relationships: []
       }
+      user_letters: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          open_on: string | null
+          recipient: string | null
+          title: string
+          updated_at: string
+          user_id: string
+          visibility: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          open_on?: string | null
+          recipient?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+          visibility?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          open_on?: string | null
+          recipient?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          visibility?: string
+        }
+        Relationships: []
+      }
       user_memories: {
         Row: {
+          category: string | null
           created_at: string
           id: string
           location: string | null
@@ -166,11 +284,14 @@ export type Database = {
           memory_date: string | null
           people: string[]
           story: string | null
+          tags: string[]
           title: string
           updated_at: string
           user_id: string
+          visibility: string
         }
         Insert: {
+          category?: string | null
           created_at?: string
           id?: string
           location?: string | null
@@ -178,11 +299,14 @@ export type Database = {
           memory_date?: string | null
           people?: string[]
           story?: string | null
+          tags?: string[]
           title: string
           updated_at?: string
           user_id: string
+          visibility?: string
         }
         Update: {
+          category?: string | null
           created_at?: string
           id?: string
           location?: string | null
@@ -190,9 +314,11 @@ export type Database = {
           memory_date?: string | null
           people?: string[]
           story?: string | null
+          tags?: string[]
           title?: string
           updated_at?: string
           user_id?: string
+          visibility?: string
         }
         Relationships: []
       }
@@ -231,6 +357,9 @@ export type Database = {
       }
       user_prayers: {
         Row: {
+          answer_note: string | null
+          answered: boolean
+          answered_at: string | null
           created_at: string
           id: string
           note: string | null
@@ -241,6 +370,9 @@ export type Database = {
           waiting: boolean
         }
         Insert: {
+          answer_note?: string | null
+          answered?: boolean
+          answered_at?: string | null
           created_at?: string
           id?: string
           note?: string | null
@@ -251,6 +383,9 @@ export type Database = {
           waiting?: boolean
         }
         Update: {
+          answer_note?: string | null
+          answered?: boolean
+          answered_at?: string | null
           created_at?: string
           id?: string
           note?: string | null
@@ -259,6 +394,30 @@ export type Database = {
           updated_at?: string
           user_id?: string
           waiting?: boolean
+        }
+        Relationships: []
+      }
+      user_preferences: {
+        Row: {
+          created_at: string
+          daily_scripture_dismissed_on: string | null
+          translation: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          daily_scripture_dismissed_on?: string | null
+          translation?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          daily_scripture_dismissed_on?: string | null
+          translation?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
