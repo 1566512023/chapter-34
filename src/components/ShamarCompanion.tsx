@@ -121,6 +121,7 @@ export function ShamarCompanion() {
           <ChatArea
             key={activeThreadId ?? "none"}
             threadId={activeThreadId}
+            chapterId={activeId}
             initialMessages={threadMessages}
             showThreadList={showThreadList}
             threads={threads}
