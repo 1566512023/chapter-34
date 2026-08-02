@@ -1,16 +1,16 @@
 import { createLovableAiGatewayProvider } from "@/lib/ai-gateway.server";
-import { shamarSystemPrompt } from "@/lib/shamar";
+import { buildShamarSystem } from "@/lib/shamar";
 import { createFileRoute } from "@tanstack/react-router";
 import { createClient } from "@supabase/supabase-js";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
 
-type Body = { messages?: unknown; threadId?: unknown };
+type Body = { messages?: unknown; threadId?: unknown; chapterId?: unknown };
 
 export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const { messages, threadId } = (await request.json()) as Body;
+        const { messages, threadId, chapterId } = (await request.json()) as Body;
         if (!Array.isArray(messages) || typeof threadId !== "string") {
           return new Response("Bad request", { status: 400 });
         }
@@ -53,6 +53,12 @@ export const Route = createFileRoute("/api/chat")({
 
         // Persist the latest user message immediately.
         const lastUser = [...uiMessages].reverse().find((m) => m.role === "user");
+        const lastUserText = lastUser
+          ? (lastUser.parts as { type: string; text?: string }[])
+              .filter((p) => p.type === "text")
+              .map((p) => p.text ?? "")
+              .join(" ")
+          : "";
         if (lastUser) {
           await supabase.from("shamar_messages").insert({
             thread_id: threadId,
@@ -66,9 +72,26 @@ export const Route = createFileRoute("/api/chat")({
             .eq("id", threadId);
         }
 
+        // Only what she has actually saved — Shamar never invents history.
+        const [mem, pray, grat, scrip] = await Promise.all([
+          supabase.from("user_memories").select("title,memory_date,category").order("created_at", { ascending: false }).limit(8),
+          supabase.from("user_prayers").select("title,waiting,answered").order("created_at", { ascending: false }).limit(8),
+          supabase.from("gratitude_entries").select("body,category").order("created_at", { ascending: false }).limit(5),
+          supabase.from("saved_scriptures").select("reference,theme").order("created_at", { ascending: false }).limit(6),
+        ]);
+
         const result = streamText({
           model: gateway("google/gemini-2.5-flash"),
-          system: shamarSystemPrompt,
+          system: buildShamarSystem({
+            chapterId: typeof chapterId === "string" ? chapterId : null,
+            lastUserText,
+            recall: {
+              memories: mem.data ?? [],
+              prayers: pray.data ?? [],
+              gratitude: grat.data ?? [],
+              savedScriptures: scrip.data ?? [],
+            },
+          }),
           messages: convertToModelMessages(uiMessages),
         });
 
