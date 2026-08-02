@@ -300,6 +300,7 @@ function SignedOutView({
 
 function ChatArea({
   threadId,
+  chapterId,
   initialMessages,
   showThreadList,
   threads,
@@ -312,6 +313,7 @@ function ChatArea({
   onSignOut,
 }: {
   threadId: string | null;
+  chapterId: string | null;
   initialMessages: UIMessage[];
   showThreadList: boolean;
   threads: Thread[];
@@ -339,10 +341,10 @@ function ChatArea({
           return fetch(input as RequestInfo, { ...init, headers });
         },
         prepareSendMessagesRequest: ({ messages, body }) => ({
-          body: { messages, threadId, ...(body ?? {}) },
+          body: { messages, threadId, chapterId, ...(body ?? {}) },
         }),
       }),
-    [threadId],
+    [threadId, chapterId],
   );
 
   const { messages, sendMessage, status, error } = useChat({
