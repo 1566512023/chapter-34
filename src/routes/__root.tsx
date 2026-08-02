@@ -91,13 +91,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "A treasured leather-bound journal preserving Phindile's story — every chapter a testimony of God's faithfulness.",
       },
       { name: "author", content: "Your Best Friend" },
-      { property: "og:title", content: "Phindile — Chapter 34" },
+      { property: "og:title", content: "Phindile — Chapter 34 · A Living Journal of God's Faithfulness" },
       {
         property: "og:description",
-        content: "Every Chapter Tells the Story of God's Faithfulness.",
+        content: "A treasured leather-bound journal preserving Phindile's story — every chapter a testimony of God's faithfulness.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Phindile — Chapter 34 · A Living Journal of God's Faithfulness" },
+      { name: "twitter:description", content: "A treasured leather-bound journal preserving Phindile's story — every chapter a testimony of God's faithfulness." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/5ad5b6a6-d866-46b1-b6a8-8e789407a7fb" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/5ad5b6a6-d866-46b1-b6a8-8e789407a7fb" },
     ],
     links: [
       {
