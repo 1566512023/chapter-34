@@ -97,10 +97,13 @@ export const savePreferences = createServerFn({ method: "POST" })
       .parse(d),
   )
   .handler(async ({ context, data }) => {
-    const payload: Record<string, unknown> = { user_id: context.userId };
-    if (data.translation) payload["translation"] = data.translation;
-    if (data.daily_scripture_dismissed_on !== undefined)
-      payload["daily_scripture_dismissed_on"] = data.daily_scripture_dismissed_on;
+    const payload = {
+      user_id: context.userId,
+      ...(data.translation ? { translation: data.translation } : {}),
+      ...(data.daily_scripture_dismissed_on !== undefined
+        ? { daily_scripture_dismissed_on: data.daily_scripture_dismissed_on }
+        : {}),
+    };
     const { error } = await context.supabase
       .from("user_preferences")
       .upsert(payload, { onConflict: "user_id" });
