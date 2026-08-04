@@ -403,3 +403,27 @@ html[data-reduced-motion="true"] .ribbon-sway {
 }
 .shamar-breathe { animation: shamar-breathe 4.8s ease-in-out infinite; }
 html[data-reduced-motion="true"] .shamar-breathe { animation: none; }
+
+/* --- The Writing Desk (heirloom keeper) --- */
+@keyframes desk-close-book {
+  0% { transform: translateY(0) rotateX(0deg); opacity: 1; }
+  100% { transform: translateY(12%) rotateX(-14deg); opacity: 0; }
+}
+.desk-closing { animation: desk-close-book 0.62s cubic-bezier(0.6, 0, 0.3, 1) forwards; transform-origin: bottom center; }
+@keyframes pen-return {
+  0% { transform: translate(-46px, -26px) rotate(-24deg); opacity: 0; }
+  55% { transform: translate(0, 0) rotate(-8deg); opacity: 1; }
+  100% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+}
+.pen-return { animation: pen-return 0.7s cubic-bezier(0.5, 0, 0.2, 1) both; }
+html[data-reduced-motion="true"] .desk-closing,
+html[data-reduced-motion="true"] .pen-return { animation: none; }
+
+@utility desk-paper {
+  background-color: oklch(0.985 0.012 88);
+  background-image:
+    radial-gradient(ellipse at 20% 0%, oklch(1 0 0 / 0.6), transparent 60%),
+    url("/paper.jpg");
+  background-size: cover;
+  background-blend-mode: multiply;
+}
