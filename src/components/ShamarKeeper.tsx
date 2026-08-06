@@ -172,22 +172,19 @@ export function ShamarKeeper() {
           style={{ borderColor: "oklch(0.86 0.06 85 / 0.45)" }}
           aria-hidden
         />
-        <header className="relative px-6 pt-6 pb-3">
-          <p className="font-display text-[0.58rem] uppercase tracking-[0.5em]" style={{ color: soft }}>
-            שָׁמַר · kept
-          </p>
-          <h2 className="mt-1 font-display text-2xl" style={{ color: ink }}>
+        <header className="relative px-7 pt-7 pb-4">
+          <h2 className="font-display text-2xl" style={{ color: ink }}>
             The Writing Desk
           </h2>
-          <p className="font-display text-sm italic" style={{ color: soft }}>
+          <p className="mt-1 font-display text-sm italic" style={{ color: soft }}>
             A quiet place to remember, reflect and preserve.
           </p>
-          <div className="mt-3 h-px w-16" style={{ background: gold }} />
+          <div className="mt-4 h-px w-16" style={{ background: gold }} />
           {room !== "desk" && (
             <button
               type="button"
               onClick={() => setRoom("desk")}
-              className="absolute right-14 top-4 rounded-md border px-2 py-1 font-display text-[0.55rem] uppercase tracking-[0.3em] hover:bg-white/50"
+              className="absolute right-16 top-5 rounded-md border px-2 py-1 font-display text-[0.55rem] uppercase tracking-[0.3em] hover:bg-white/50"
               style={{ borderColor: line, color: soft }}
             >
               Desk
@@ -196,19 +193,21 @@ export function ShamarKeeper() {
           <button
             type="button"
             onClick={close}
-            className="absolute right-4 top-3 font-display text-xl"
+            className="absolute right-5 top-5 font-display text-[0.55rem] uppercase tracking-[0.3em] hover:underline"
             style={{ color: soft }}
             aria-label="Close the Writing Desk"
           >
-            ×
+            Close
           </button>
         </header>
 
-        <div className="relative flex-1 overflow-y-auto px-6 pb-8">
+        <div className="relative flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden px-7 pb-12">
           {!session ? (
             <SignedOut />
+          ) : !introDone ? (
+            <Introduction onDone={finishIntro} />
           ) : room === "desk" ? (
-            <Desk name={firstName} prompt={prompt} onChoose={setRoom} />
+            <Desk name={firstName} onChoose={setRoom} />
           ) : room === "journal" ? (
             <JournalRoom />
           ) : room === "album" ? (
@@ -221,6 +220,12 @@ export function ShamarKeeper() {
             <ReadingRoom />
           ) : room === "letters" ? (
             <LetterChest />
+          ) : room === "music" ? (
+            <MusicRoom chapterId={chapterId} />
+          ) : room === "ask" ? (
+            <AskRoom chapterId={chapterId} />
+          ) : room === "about" ? (
+            <AboutShamar />
           ) : (
             <GratitudeRoom />
           )}
