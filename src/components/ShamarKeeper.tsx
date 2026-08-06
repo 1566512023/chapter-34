@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import type { Session } from "@supabase/supabase-js";
@@ -18,6 +18,9 @@ import {
   saveScripture,
 } from "@/lib/shamar-scripture.functions";
 import { scriptureForToday, searchScripture } from "@/lib/scripture";
+import { todaysEncouragement } from "@/lib/shamar";
+import { ShamarChat } from "@/components/ShamarChat";
+import { CHAPTER_MOODS, MOODS, getPlayer, loadPrefs, savePrefs } from "@/lib/soundscapes";
 
 type Room =
   | "desk"
@@ -27,7 +30,12 @@ type Room =
   | "prayerbook"
   | "reading"
   | "letters"
-  | "gratitude";
+  | "gratitude"
+  | "music"
+  | "ask"
+  | "about";
+
+const INTRO_KEY = "phindile:shamar:intro-seen";
 
 const ink = "oklch(0.35 0.06 25)";
 const soft = "oklch(0.52 0.07 25)";
@@ -48,14 +56,6 @@ const GRATITUDE_CATEGORIES = [
   "Other",
 ];
 
-const GENTLE_PROMPTS = [
-  "Anything worth preserving today?",
-  "Would you like to write before the day slips away?",
-  "A quiet moment is enough.",
-  "Some days only need one line.",
-  "What would you like tomorrow to remember?",
-];
-
 function greeting(d = new Date()) {
   const h = d.getHours();
   if (h < 12) return "Good morning";
@@ -68,6 +68,11 @@ export function ShamarKeeper() {
   const [closing, setClosing] = useState(false);
   const [room, setRoom] = useState<Room>("desk");
   const [session, setSession] = useState<Session | null>(null);
+  const [introDone, setIntroDone] = useState(true);
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const chapterId = pathname.startsWith("/chapter/")
+    ? pathname.slice("/chapter/".length)
+    : null;
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session));
@@ -76,6 +81,20 @@ export function ShamarKeeper() {
     });
     return () => sub.subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setIntroDone(localStorage.getItem(INTRO_KEY) === "1");
+  }, [session]);
+
+  function finishIntro() {
+    try {
+      localStorage.setItem(INTRO_KEY, "1");
+    } catch {
+      /* private mode */
+    }
+    setIntroDone(true);
+  }
 
   function close() {
     setClosing(true);
@@ -94,10 +113,6 @@ export function ShamarKeeper() {
   }, [open]);
 
   const firstName = "Phindile";
-  const prompt = useMemo(
-    () => GENTLE_PROMPTS[Math.floor(Date.now() / 86_400_000) % GENTLE_PROMPTS.length]!,
-    [],
-  );
 
   return (
     <>
