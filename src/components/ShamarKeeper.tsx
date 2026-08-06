@@ -267,74 +267,197 @@ function SignedOut() {
   );
 }
 
+/* ---------- First-time introduction ---------- */
+
+function Introduction({ onDone }: { onDone: () => void }) {
+  return (
+    <div className="space-y-6 pb-4">
+      <p className="font-display text-[0.58rem] uppercase tracking-[0.5em]" style={{ color: soft }}>
+        שָׁמַר · shamar
+      </p>
+      <p className="font-display text-lg italic" style={{ color: ink, overflowWrap: "anywhere" }}>
+        To keep. To guard. To preserve.
+      </p>
+      <p className="font-display" style={{ color: soft, overflowWrap: "anywhere" }}>
+        This is your writing desk. Shamar simply keeps what you place here —
+        pages, prayers, photographs, letters and small mercies — and stays out of
+        the way until you ask.
+      </p>
+      <Primary onClick={onDone}>Sit down at the desk</Primary>
+    </div>
+  );
+}
+
+function AboutShamar() {
+  return (
+    <div className="space-y-5 pb-4">
+      <RoomTitle title="About Shamar" line="שָׁמַר — to keep, guard, preserve." />
+      <p className="font-display" style={{ color: soft, overflowWrap: "anywhere" }}>
+        Shamar is a quiet companion, not a pastor, prophet or authority. It helps
+        you find a Scripture, hold a memory, or put words to a prayer — only when
+        invited.
+      </p>
+      <p className="font-display italic" style={{ color: ink, overflowWrap: "anywhere" }}>
+        To remember with gratitude. To preserve with love. To encourage with
+        truth. To point every chapter back to God's faithfulness.
+      </p>
+    </div>
+  );
+}
+
 /* ---------- The desk ---------- */
 
-function Desk({
-  name,
-  prompt,
-  onChoose,
-}: {
-  name: string;
-  prompt: string;
-  onChoose: (r: Room) => void;
-}) {
-  const objects: { room: Room; icon: string; label: string; line: string }[] = [
-    { room: "journal", icon: "✍🏻", label: "Journal", line: "Every page remembers." },
-    { room: "album", icon: "📷", label: "Family Album", line: "Moments preserved with love." },
-    { room: "pray", icon: "🙏", label: "Prayer Book", line: "Every prayer has a place." },
-    { room: "reading", icon: "📖", label: "Reading Room", line: "Sit with Scripture." },
-    { room: "letters", icon: "💌", label: "Letter Chest", line: "Words waiting for tomorrow." },
-    { room: "gratitude", icon: "🌿", label: "Book of Gratitude", line: "Small mercies become lasting memories." },
+function Desk({ name, onChoose }: { name: string; onChoose: (r: Room) => void }) {
+  const tiles: { room: Room; icon: string; label: string }[] = [
+    { room: "journal", icon: "✍️", label: "Write a Page" },
+    { room: "album", icon: "📸", label: "Preserve a Memory" },
+    { room: "pray", icon: "🙏", label: "Prayer Book" },
+    { room: "gratitude", icon: "🌿", label: "Gratitude" },
+    { room: "reading", icon: "📖", label: "Reading Room" },
+    { room: "letters", icon: "💌", label: "Future Letters" },
+    { room: "music", icon: "🎵", label: "Music Companion" },
   ];
   const today = useMemo(() => scriptureForToday(), []);
+  const [reflection, setReflection] = useState("");
+  useEffect(() => setReflection(todaysEncouragement()), []);
+
   return (
-    <div className="space-y-6">
-      <div className="space-y-1">
-        <p className="font-display text-lg" style={{ color: ink }}>
+    <div className="space-y-11 pb-6">
+      <div className="space-y-1 overflow-hidden">
+        <p className="font-display text-lg" style={{ color: ink, overflowWrap: "anywhere" }}>
           {greeting()}, {name}.
         </p>
-        <p className="font-script text-xl" style={{ color: soft }}>
-          {prompt}
+        <p className="font-display text-sm italic" style={{ color: soft, overflowWrap: "anywhere" }}>
+          What would you like to preserve today?
         </p>
       </div>
 
-      <div className="space-y-1">
-        {objects.map((o) => (
+      <div className="grid grid-cols-2 gap-3">
+        {tiles.map((t) => (
           <button
-            key={o.room}
+            key={t.room}
             type="button"
-            onClick={() => onChoose(o.room)}
-            className="flex w-full items-baseline gap-3 border-b py-3 text-left transition hover:pl-1"
-            style={{ borderColor: "oklch(0.88 0.04 60 / 0.5)" }}
+            onClick={() => onChoose(t.room)}
+            className="flex min-h-[4.5rem] flex-col justify-between overflow-hidden rounded-lg border bg-white/50 px-4 py-3 text-left transition hover:bg-white/80"
+            style={{ borderColor: line }}
           >
-            <span className="text-base" aria-hidden>
-              {o.icon}
+            <span className="text-base leading-none" aria-hidden>
+              {t.icon}
             </span>
-            <span className="flex-1">
-              <span className="block font-display text-lg" style={{ color: ink }}>
-                {o.label}
-              </span>
-              <span className="block font-display text-sm italic" style={{ color: soft }}>
-                {o.line}
-              </span>
+            <span
+              className="mt-2 block font-display text-sm"
+              style={{ color: ink, overflowWrap: "anywhere" }}
+            >
+              {t.label}
             </span>
           </button>
         ))}
+        <button
+          type="button"
+          onClick={() => onChoose("ask")}
+          className="flex min-h-[4.5rem] flex-col justify-end overflow-hidden rounded-lg border border-dashed px-4 py-3 text-left transition hover:bg-white/50"
+          style={{ borderColor: line }}
+        >
+          <span className="font-display text-sm italic" style={{ color: soft }}>
+            Ask Shamar
+          </span>
+        </button>
       </div>
 
+      <section className="overflow-hidden rounded-lg border px-5 py-5" style={{ borderColor: line }}>
+        <p className="font-display text-[0.55rem] uppercase tracking-[0.35em]" style={{ color: soft }}>
+          Today's Reflection
+        </p>
+        <p
+          className="mt-3 font-hand text-base leading-relaxed"
+          style={{ color: ink, overflowWrap: "anywhere" }}
+        >
+          {reflection || "\u00a0"}
+        </p>
+      </section>
+
       {today && (
-        <div className="rounded-lg border px-4 py-4" style={{ borderColor: line }}>
+        <section className="overflow-hidden rounded-lg border px-5 py-5" style={{ borderColor: line }}>
           <p className="font-display text-[0.55rem] uppercase tracking-[0.35em]" style={{ color: soft }}>
-            Today's verse
+            Today's Scripture
           </p>
-          <p className="mt-2 font-display italic" style={{ color: ink }}>
+          <p className="mt-3 font-display italic" style={{ color: ink, overflowWrap: "anywhere" }}>
             {today.verse.text}
           </p>
-          <p className="mt-1 font-display text-xs" style={{ color: soft }}>
+          <p className="mt-2 font-display text-xs" style={{ color: soft }}>
             {today.verse.reference}
           </p>
-        </div>
+        </section>
       )}
+
+      <button
+        type="button"
+        onClick={() => onChoose("about")}
+        className="font-display text-[0.55rem] uppercase tracking-[0.35em] hover:underline"
+        style={{ color: soft }}
+      >
+        About Shamar
+      </button>
+    </div>
+  );
+}
+
+/* ---------- Ask Shamar ---------- */
+
+function AskRoom({ chapterId }: { chapterId: string | null }) {
+  return (
+    <div className="flex min-h-0 flex-1 flex-col gap-5 pb-2">
+      <RoomTitle title="Ask Shamar" line="Only when you'd like a hand." />
+      <ShamarChat chapterId={chapterId} />
+    </div>
+  );
+}
+
+/* ---------- Music Companion ---------- */
+
+function MusicRoom({ chapterId }: { chapterId: string | null }) {
+  const [prefs, setPrefs] = useState(() => ({ on: false, volume: 0.4 }));
+  useEffect(() => setPrefs(loadPrefs()), []);
+
+  const mood = MOODS[(chapterId && CHAPTER_MOODS[chapterId]) || "morning"];
+
+  function apply(next: { on: boolean; volume: number }) {
+    setPrefs(next);
+    savePrefs(next);
+    const player = getPlayer();
+    if (!player) return;
+    player.setVolume(next.volume);
+    if (next.on) void player.play(mood);
+    else player.stop();
+  }
+
+  return (
+    <div className="space-y-6 pb-6">
+      <RoomTitle title="Music Companion" line="A soundtrack for this chapter." />
+      <p className="font-display text-sm italic" style={{ color: soft, overflowWrap: "anywhere" }}>
+        Now playing: {mood.label}
+      </p>
+      <div className="flex gap-2">
+        {prefs.on ? (
+          <Quiet onClick={() => apply({ ...prefs, on: false })}>Pause</Quiet>
+        ) : (
+          <Primary onClick={() => apply({ ...prefs, on: true })}>Play softly</Primary>
+        )}
+      </div>
+      <label className="block">
+        <span className="font-display text-[0.55rem] uppercase tracking-[0.35em]" style={{ color: soft }}>
+          Volume
+        </span>
+        <input
+          type="range"
+          min={0}
+          max={1}
+          step={0.05}
+          value={prefs.volume}
+          onChange={(e) => apply({ ...prefs, volume: Number(e.target.value) })}
+          className="mt-2 w-full accent-[oklch(0.6_0.13_20)]"
+        />
+      </label>
     </div>
   );
 }
