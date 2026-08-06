@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import type { Session } from "@supabase/supabase-js";
@@ -18,6 +18,9 @@ import {
   saveScripture,
 } from "@/lib/shamar-scripture.functions";
 import { scriptureForToday, searchScripture } from "@/lib/scripture";
+import { todaysEncouragement } from "@/lib/shamar";
+import { ShamarChat } from "@/components/ShamarChat";
+import { CHAPTER_MOODS, MOODS, getPlayer, loadPrefs, savePrefs } from "@/lib/soundscapes";
 
 type Room =
   | "desk"
@@ -27,7 +30,12 @@ type Room =
   | "prayerbook"
   | "reading"
   | "letters"
-  | "gratitude";
+  | "gratitude"
+  | "music"
+  | "ask"
+  | "about";
+
+const INTRO_KEY = "phindile:shamar:intro-seen";
 
 const ink = "oklch(0.35 0.06 25)";
 const soft = "oklch(0.52 0.07 25)";
@@ -48,14 +56,6 @@ const GRATITUDE_CATEGORIES = [
   "Other",
 ];
 
-const GENTLE_PROMPTS = [
-  "Anything worth preserving today?",
-  "Would you like to write before the day slips away?",
-  "A quiet moment is enough.",
-  "Some days only need one line.",
-  "What would you like tomorrow to remember?",
-];
-
 function greeting(d = new Date()) {
   const h = d.getHours();
   if (h < 12) return "Good morning";
@@ -68,6 +68,11 @@ export function ShamarKeeper() {
   const [closing, setClosing] = useState(false);
   const [room, setRoom] = useState<Room>("desk");
   const [session, setSession] = useState<Session | null>(null);
+  const [introDone, setIntroDone] = useState(true);
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const chapterId = pathname.startsWith("/chapter/")
+    ? pathname.slice("/chapter/".length)
+    : null;
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setSession(data.session));
@@ -76,6 +81,20 @@ export function ShamarKeeper() {
     });
     return () => sub.subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setIntroDone(localStorage.getItem(INTRO_KEY) === "1");
+  }, [session]);
+
+  function finishIntro() {
+    try {
+      localStorage.setItem(INTRO_KEY, "1");
+    } catch {
+      /* private mode */
+    }
+    setIntroDone(true);
+  }
 
   function close() {
     setClosing(true);
@@ -94,10 +113,6 @@ export function ShamarKeeper() {
   }, [open]);
 
   const firstName = "Phindile";
-  const prompt = useMemo(
-    () => GENTLE_PROMPTS[Math.floor(Date.now() / 86_400_000) % GENTLE_PROMPTS.length]!,
-    [],
-  );
 
   return (
     <>
@@ -157,22 +172,19 @@ export function ShamarKeeper() {
           style={{ borderColor: "oklch(0.86 0.06 85 / 0.45)" }}
           aria-hidden
         />
-        <header className="relative px-6 pt-6 pb-3">
-          <p className="font-display text-[0.58rem] uppercase tracking-[0.5em]" style={{ color: soft }}>
-            שָׁמַר · kept
-          </p>
-          <h2 className="mt-1 font-display text-2xl" style={{ color: ink }}>
+        <header className="relative px-7 pt-7 pb-4">
+          <h2 className="font-display text-2xl" style={{ color: ink }}>
             The Writing Desk
           </h2>
-          <p className="font-display text-sm italic" style={{ color: soft }}>
+          <p className="mt-1 font-display text-sm italic" style={{ color: soft }}>
             A quiet place to remember, reflect and preserve.
           </p>
-          <div className="mt-3 h-px w-16" style={{ background: gold }} />
+          <div className="mt-4 h-px w-16" style={{ background: gold }} />
           {room !== "desk" && (
             <button
               type="button"
               onClick={() => setRoom("desk")}
-              className="absolute right-14 top-4 rounded-md border px-2 py-1 font-display text-[0.55rem] uppercase tracking-[0.3em] hover:bg-white/50"
+              className="absolute right-16 top-5 rounded-md border px-2 py-1 font-display text-[0.55rem] uppercase tracking-[0.3em] hover:bg-white/50"
               style={{ borderColor: line, color: soft }}
             >
               Desk
@@ -181,19 +193,21 @@ export function ShamarKeeper() {
           <button
             type="button"
             onClick={close}
-            className="absolute right-4 top-3 font-display text-xl"
+            className="absolute right-5 top-5 font-display text-[0.55rem] uppercase tracking-[0.3em] hover:underline"
             style={{ color: soft }}
             aria-label="Close the Writing Desk"
           >
-            ×
+            Close
           </button>
         </header>
 
-        <div className="relative flex-1 overflow-y-auto px-6 pb-8">
+        <div className="relative flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden px-7 pb-12">
           {!session ? (
             <SignedOut />
+          ) : !introDone ? (
+            <Introduction onDone={finishIntro} />
           ) : room === "desk" ? (
-            <Desk name={firstName} prompt={prompt} onChoose={setRoom} />
+            <Desk name={firstName} onChoose={setRoom} />
           ) : room === "journal" ? (
             <JournalRoom />
           ) : room === "album" ? (
@@ -206,6 +220,12 @@ export function ShamarKeeper() {
             <ReadingRoom />
           ) : room === "letters" ? (
             <LetterChest />
+          ) : room === "music" ? (
+            <MusicRoom chapterId={chapterId} />
+          ) : room === "ask" ? (
+            <AskRoom chapterId={chapterId} />
+          ) : room === "about" ? (
+            <AboutShamar />
           ) : (
             <GratitudeRoom />
           )}
@@ -247,74 +267,197 @@ function SignedOut() {
   );
 }
 
+/* ---------- First-time introduction ---------- */
+
+function Introduction({ onDone }: { onDone: () => void }) {
+  return (
+    <div className="space-y-6 pb-4">
+      <p className="font-display text-[0.58rem] uppercase tracking-[0.5em]" style={{ color: soft }}>
+        שָׁמַר · shamar
+      </p>
+      <p className="font-display text-lg italic" style={{ color: ink, overflowWrap: "anywhere" }}>
+        To keep. To guard. To preserve.
+      </p>
+      <p className="font-display" style={{ color: soft, overflowWrap: "anywhere" }}>
+        This is your writing desk. Shamar simply keeps what you place here —
+        pages, prayers, photographs, letters and small mercies — and stays out of
+        the way until you ask.
+      </p>
+      <Primary onClick={onDone}>Sit down at the desk</Primary>
+    </div>
+  );
+}
+
+function AboutShamar() {
+  return (
+    <div className="space-y-5 pb-4">
+      <RoomTitle title="About Shamar" line="שָׁמַר — to keep, guard, preserve." />
+      <p className="font-display" style={{ color: soft, overflowWrap: "anywhere" }}>
+        Shamar is a quiet companion, not a pastor, prophet or authority. It helps
+        you find a Scripture, hold a memory, or put words to a prayer — only when
+        invited.
+      </p>
+      <p className="font-display italic" style={{ color: ink, overflowWrap: "anywhere" }}>
+        To remember with gratitude. To preserve with love. To encourage with
+        truth. To point every chapter back to God's faithfulness.
+      </p>
+    </div>
+  );
+}
+
 /* ---------- The desk ---------- */
 
-function Desk({
-  name,
-  prompt,
-  onChoose,
-}: {
-  name: string;
-  prompt: string;
-  onChoose: (r: Room) => void;
-}) {
-  const objects: { room: Room; icon: string; label: string; line: string }[] = [
-    { room: "journal", icon: "✍🏻", label: "Journal", line: "Every page remembers." },
-    { room: "album", icon: "📷", label: "Family Album", line: "Moments preserved with love." },
-    { room: "pray", icon: "🙏", label: "Prayer Book", line: "Every prayer has a place." },
-    { room: "reading", icon: "📖", label: "Reading Room", line: "Sit with Scripture." },
-    { room: "letters", icon: "💌", label: "Letter Chest", line: "Words waiting for tomorrow." },
-    { room: "gratitude", icon: "🌿", label: "Book of Gratitude", line: "Small mercies become lasting memories." },
+function Desk({ name, onChoose }: { name: string; onChoose: (r: Room) => void }) {
+  const tiles: { room: Room; icon: string; label: string }[] = [
+    { room: "journal", icon: "✍️", label: "Write a Page" },
+    { room: "album", icon: "📸", label: "Preserve a Memory" },
+    { room: "pray", icon: "🙏", label: "Prayer Book" },
+    { room: "gratitude", icon: "🌿", label: "Gratitude" },
+    { room: "reading", icon: "📖", label: "Reading Room" },
+    { room: "letters", icon: "💌", label: "Future Letters" },
+    { room: "music", icon: "🎵", label: "Music Companion" },
   ];
   const today = useMemo(() => scriptureForToday(), []);
+  const [reflection, setReflection] = useState("");
+  useEffect(() => setReflection(todaysEncouragement()), []);
+
   return (
-    <div className="space-y-6">
-      <div className="space-y-1">
-        <p className="font-display text-lg" style={{ color: ink }}>
+    <div className="space-y-11 pb-6">
+      <div className="space-y-1 overflow-hidden">
+        <p className="font-display text-lg" style={{ color: ink, overflowWrap: "anywhere" }}>
           {greeting()}, {name}.
         </p>
-        <p className="font-script text-xl" style={{ color: soft }}>
-          {prompt}
+        <p className="font-display text-sm italic" style={{ color: soft, overflowWrap: "anywhere" }}>
+          What would you like to preserve today?
         </p>
       </div>
 
-      <div className="space-y-1">
-        {objects.map((o) => (
+      <div className="grid grid-cols-2 gap-3">
+        {tiles.map((t) => (
           <button
-            key={o.room}
+            key={t.room}
             type="button"
-            onClick={() => onChoose(o.room)}
-            className="flex w-full items-baseline gap-3 border-b py-3 text-left transition hover:pl-1"
-            style={{ borderColor: "oklch(0.88 0.04 60 / 0.5)" }}
+            onClick={() => onChoose(t.room)}
+            className="flex min-h-[4.5rem] flex-col justify-between overflow-hidden rounded-lg border bg-white/50 px-4 py-3 text-left transition hover:bg-white/80"
+            style={{ borderColor: line }}
           >
-            <span className="text-base" aria-hidden>
-              {o.icon}
+            <span className="text-base leading-none" aria-hidden>
+              {t.icon}
             </span>
-            <span className="flex-1">
-              <span className="block font-display text-lg" style={{ color: ink }}>
-                {o.label}
-              </span>
-              <span className="block font-display text-sm italic" style={{ color: soft }}>
-                {o.line}
-              </span>
+            <span
+              className="mt-2 block font-display text-sm"
+              style={{ color: ink, overflowWrap: "anywhere" }}
+            >
+              {t.label}
             </span>
           </button>
         ))}
+        <button
+          type="button"
+          onClick={() => onChoose("ask")}
+          className="flex min-h-[4.5rem] flex-col justify-end overflow-hidden rounded-lg border border-dashed px-4 py-3 text-left transition hover:bg-white/50"
+          style={{ borderColor: line }}
+        >
+          <span className="font-display text-sm italic" style={{ color: soft }}>
+            Ask Shamar
+          </span>
+        </button>
       </div>
 
+      <section className="overflow-hidden rounded-lg border px-5 py-5" style={{ borderColor: line }}>
+        <p className="font-display text-[0.55rem] uppercase tracking-[0.35em]" style={{ color: soft }}>
+          Today's Reflection
+        </p>
+        <p
+          className="mt-3 font-hand text-base leading-relaxed"
+          style={{ color: ink, overflowWrap: "anywhere" }}
+        >
+          {reflection || "\u00a0"}
+        </p>
+      </section>
+
       {today && (
-        <div className="rounded-lg border px-4 py-4" style={{ borderColor: line }}>
+        <section className="overflow-hidden rounded-lg border px-5 py-5" style={{ borderColor: line }}>
           <p className="font-display text-[0.55rem] uppercase tracking-[0.35em]" style={{ color: soft }}>
-            Today's verse
+            Today's Scripture
           </p>
-          <p className="mt-2 font-display italic" style={{ color: ink }}>
+          <p className="mt-3 font-display italic" style={{ color: ink, overflowWrap: "anywhere" }}>
             {today.verse.text}
           </p>
-          <p className="mt-1 font-display text-xs" style={{ color: soft }}>
+          <p className="mt-2 font-display text-xs" style={{ color: soft }}>
             {today.verse.reference}
           </p>
-        </div>
+        </section>
       )}
+
+      <button
+        type="button"
+        onClick={() => onChoose("about")}
+        className="font-display text-[0.55rem] uppercase tracking-[0.35em] hover:underline"
+        style={{ color: soft }}
+      >
+        About Shamar
+      </button>
+    </div>
+  );
+}
+
+/* ---------- Ask Shamar ---------- */
+
+function AskRoom({ chapterId }: { chapterId: string | null }) {
+  return (
+    <div className="flex min-h-0 flex-1 flex-col gap-5 pb-2">
+      <RoomTitle title="Ask Shamar" line="Only when you'd like a hand." />
+      <ShamarChat chapterId={chapterId} />
+    </div>
+  );
+}
+
+/* ---------- Music Companion ---------- */
+
+function MusicRoom({ chapterId }: { chapterId: string | null }) {
+  const [prefs, setPrefs] = useState(() => ({ on: false, volume: 0.4 }));
+  useEffect(() => setPrefs(loadPrefs()), []);
+
+  const mood = MOODS[(chapterId && CHAPTER_MOODS[chapterId]) || "morning"];
+
+  function apply(next: { on: boolean; volume: number }) {
+    setPrefs(next);
+    savePrefs(next);
+    const player = getPlayer();
+    if (!player) return;
+    player.setVolume(next.volume);
+    if (next.on) void player.play(mood);
+    else player.stop();
+  }
+
+  return (
+    <div className="space-y-6 pb-6">
+      <RoomTitle title="Music Companion" line="A soundtrack for this chapter." />
+      <p className="font-display text-sm italic" style={{ color: soft, overflowWrap: "anywhere" }}>
+        Now playing: {mood.label}
+      </p>
+      <div className="flex gap-2">
+        {prefs.on ? (
+          <Quiet onClick={() => apply({ ...prefs, on: false })}>Pause</Quiet>
+        ) : (
+          <Primary onClick={() => apply({ ...prefs, on: true })}>Play softly</Primary>
+        )}
+      </div>
+      <label className="block">
+        <span className="font-display text-[0.55rem] uppercase tracking-[0.35em]" style={{ color: soft }}>
+          Volume
+        </span>
+        <input
+          type="range"
+          min={0}
+          max={1}
+          step={0.05}
+          value={prefs.volume}
+          onChange={(e) => apply({ ...prefs, volume: Number(e.target.value) })}
+          className="mt-2 w-full accent-[oklch(0.6_0.13_20)]"
+        />
+      </label>
     </div>
   );
 }
