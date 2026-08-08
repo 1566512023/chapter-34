@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import type { ChapterItem } from "@/data/chapters";
 import { useRouterState } from "@tanstack/react-router";
 import { recordDiscovery } from "@/lib/inventory";
+import { chapterImage } from "@/data/chapter-images";
 
 interface Props {
   item: ChapterItem | null;
@@ -29,6 +30,13 @@ export function RevealModal({ item, onClose, accent = "oklch(0.85 0.13 82)" }: P
   }, [item, onClose, pathname]);
 
   if (!item) return null;
+
+  const chapterId = pathname.startsWith("/chapter/")
+    ? pathname.slice("/chapter/".length)
+    : "";
+  const photo = item.image
+    ? { url: item.image, alt: item.title }
+    : chapterImage(chapterId, item.id);
 
   return (
     <div
@@ -62,6 +70,16 @@ export function RevealModal({ item, onClose, accent = "oklch(0.85 0.13 82)" }: P
           {item.title}
         </h2>
         <div className="mt-4 h-px w-16" style={{ background: accent }} />
+        {photo && (
+          <figure className="mt-6 overflow-hidden rounded-sm border border-current/10 shadow-lg">
+            <img
+              src={photo.url}
+              alt={photo.alt}
+              loading="lazy"
+              className="max-h-[22rem] w-full object-cover"
+            />
+          </figure>
+        )}
         {item.scripture && (
           <p className="mt-6 font-display italic text-[color:var(--ink-soft)]">
             {item.scripture}
