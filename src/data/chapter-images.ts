@@ -12,13 +12,36 @@ import graduationTrio from "@/assets/up-family_2b.jpg.asset.json";
 import foundationGranny from "@/assets/up-foundation_of_who_she_is.jpg.asset.json";
 import god from "@/assets/up-god.jpg.asset.json";
 import granny from "@/assets/up-granny_1.png.asset.json";
+import herPortrait from "@/assets/u2-her_images.jpg.asset.json";
+import lawRobes from "@/assets/u2-law.jpg.asset.json";
+import lawyerCourt from "@/assets/u2-lawyer.jpg.asset.json";
+import firmLogo from "@/assets/u2-legacy.jpg.asset.json";
+import mainOpening from "@/assets/u2-main_opening_image.jpg.asset.json";
+import mamaAndZane from "@/assets/u2-mama_and_zane.jpg.asset.json";
+import momAndZane from "@/assets/u2-mom_and_zane.jpg.asset.json";
+import motherAndBaby from "@/assets/u2-mother.jpg.asset.json";
+import motherhoodCake from "@/assets/u2-motherhood.jpg.asset.json";
+import newbornZane from "@/assets/u2-mother-hood.png.asset.json";
+
+export const MAIN_OPENING_IMAGE = { url: mainOpening.url, alt: "Phindile" };
 
 export const CHAPTER_IMAGES: Record<string, { url: string; alt: string }> = {
   "garden::granny": { url: granny.url, alt: "Phindile with her granny on graduation day" },
   "garden::sister": { url: sisterPortrait.url, alt: "Phindile's sister" },
   "foundation::god": { url: god.url, alt: "Phindile wearing her cross necklace" },
-  "foundation::family": { url: familyCollage.url, alt: "A collage of family moments" },
-  "foundation::legacy": { url: foundationGranny.url, alt: "Granny, the foundation of who she is" },
+  "foundation::family": { url: foundationGranny.url, alt: "Granny, the foundation of who she is" },
+  "foundation::law": { url: lawyerCourt.url, alt: "Phindile outside the High Court" },
+  "foundation::legacy": { url: firmLogo.url, alt: "PPN Attorneys — Your Trusted Legal Partner" },
+  "letters::to-family": { url: familyCollage.url, alt: "A collage of family moments" },
+  "thus-far::s3": { url: herPortrait.url, alt: "Phindile, coming of age" },
+  "thus-far::s5": { url: motherhoodCake.url, alt: "Motherhood — Zane's first birthday" },
+  "thus-far::s6": { url: firmLogo.url, alt: "PPN Attorneys" },
+  "woman::mother": { url: momAndZane.url, alt: "Phindile and Zane" },
+  "woman::lawyer": { url: lawRobes.url, alt: "Phindile in her advocate's robes" },
+  "little-hands::zane": { url: motherAndBaby.url, alt: "Phindile holding Zane" },
+  "little-hands::traditions": { url: mamaAndZane.url, alt: "A day out with Zane" },
+  "faithfulness::p5": { url: newbornZane.url, alt: "Newborn Zane" },
+  "purpose::opening": { url: firmLogo.url, alt: "PPN Attorneys opening" },
   "woman::faith": { url: god.url, alt: "Phindile, a woman of faith" },
   "woman::owner": { url: businessOwner.url, alt: "Phindile outside court as a business owner" },
   "woman::sister": { url: graduationTrio.url, alt: "Phindile with her sister and granny at graduation" },
