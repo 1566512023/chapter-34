@@ -22,6 +22,16 @@ import momAndZane from "@/assets/u2-mom_and_zane.jpg.asset.json";
 import motherAndBaby from "@/assets/u2-mother.jpg.asset.json";
 import motherhoodCake from "@/assets/u2-motherhood.jpg.asset.json";
 import newbornZane from "@/assets/u2-mother-hood.png.asset.json";
+import openingDay from "@/assets/u3-opening_day.jpg.asset.json";
+import ownFirm from "@/assets/u3-own_firm.jpg.asset.json";
+import partner from "@/assets/u3-partner.jpg.asset.json";
+import partnerTwo from "@/assets/u3-partner_2.jpg.asset.json";
+import penCar from "@/assets/u3-pen.jpg.asset.json";
+import pregnant from "@/assets/u3-pregnant-motherhood.jpg.asset.json";
+import proudMama from "@/assets/u3-proud_mama.jpg.asset.json";
+import recentPic from "@/assets/u3-recent_pic.jpg.asset.json";
+import schoolDays from "@/assets/u3-school_days.jpg.asset.json";
+import schoolMoments from "@/assets/u3-school_moments.jpg.asset.json";
 
 export const MAIN_OPENING_IMAGE = { url: mainOpening.url, alt: "Phindile" };
 
@@ -41,13 +51,24 @@ export const CHAPTER_IMAGES: Record<string, { url: string; alt: string }> = {
   "little-hands::zane": { url: motherAndBaby.url, alt: "Phindile holding Zane" },
   "little-hands::traditions": { url: mamaAndZane.url, alt: "A day out with Zane" },
   "faithfulness::p5": { url: newbornZane.url, alt: "Newborn Zane" },
-  "purpose::opening": { url: firmLogo.url, alt: "PPN Attorneys opening" },
   "woman::faith": { url: god.url, alt: "Phindile, a woman of faith" },
   "woman::owner": { url: businessOwner.url, alt: "Phindile outside court as a business owner" },
   "woman::sister": { url: graduationTrio.url, alt: "Phindile with her sister and granny at graduation" },
   "little-hands::birthdays": { url: birthdays.url, alt: "Zane's first birthday celebration" },
   "thus-far::s4": { url: graduationFamily.url, alt: "Graduation day with family" },
   "thus-far::s7": { url: currentPic.url, alt: "Phindile today" },
+  "purpose::opening": { url: openingDay.url, alt: "Opening day at the firm" },
+  "purpose::first-client": { url: ownFirm.url, alt: "Phindile in her own firm" },
+  "woman::partner": { url: partner.url, alt: "Partner" },
+  "memories::2022": { url: partnerTwo.url, alt: "A treasured family moment" },
+  "memories::2026": { url: penCar.url, alt: "Welcome home, Pen" },
+  "dreams::owning-pen": { url: penCar.url, alt: "Welcome home, Pen" },
+  "faithfulness::pen-journey": { url: penCar.url, alt: "Welcome home, Pen" },
+  "memories::2019": { url: pregnant.url, alt: "Waiting for Zane" },
+  "memories::2025": { url: proudMama.url, alt: "Proud mama on graduation day" },
+  "letters::to-self": { url: recentPic.url, alt: "Phindile, recently" },
+  "little-hands::school": { url: schoolDays.url, alt: "Zane's school days" },
+  "memories::2024": { url: schoolMoments.url, alt: "Graduation moments with Zane" },
 };
 
 export function chapterImage(chapterId: string, itemId: string) {
