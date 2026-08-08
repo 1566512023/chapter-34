@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { chapters, dedication } from "@/data/chapters";
 import { readBookmark } from "@/lib/bookmark";
+import { MAIN_OPENING_IMAGE } from "@/data/chapter-images";
 import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/journal")({
@@ -38,6 +39,13 @@ function JournalPage() {
 
       <div className="mx-auto max-w-5xl">
         <section className="paper mx-auto mb-16 max-w-2xl rounded-sm px-10 py-12 shadow-2xl page-in">
+          <figure className="mx-auto mb-8 w-40 overflow-hidden rounded-full border border-[oklch(0.7_0.09_60_/_0.5)] shadow-lg">
+            <img
+              src={MAIN_OPENING_IMAGE.url}
+              alt={MAIN_OPENING_IMAGE.alt}
+              className="aspect-square w-full object-cover object-top"
+            />
+          </figure>
           <p className="text-center font-script text-3xl text-[oklch(0.4_0.14_35)]">
             {dedication.greeting}
           </p>
