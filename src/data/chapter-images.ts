@@ -51,7 +51,6 @@ export const CHAPTER_IMAGES: Record<string, { url: string; alt: string }> = {
   "little-hands::zane": { url: motherAndBaby.url, alt: "Phindile holding Zane" },
   "little-hands::traditions": { url: mamaAndZane.url, alt: "A day out with Zane" },
   "faithfulness::p5": { url: newbornZane.url, alt: "Newborn Zane" },
-  "purpose::opening": { url: firmLogo.url, alt: "PPN Attorneys opening" },
   "woman::faith": { url: god.url, alt: "Phindile, a woman of faith" },
   "woman::owner": { url: businessOwner.url, alt: "Phindile outside court as a business owner" },
   "woman::sister": { url: graduationTrio.url, alt: "Phindile with her sister and granny at graduation" },
