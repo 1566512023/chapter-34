@@ -50,6 +50,9 @@ import womanOfFaith from "@/assets/u5-woman_of_faith.jpg.asset.json";
 import workingTowardsDream from "@/assets/u5-working_towards_dream.jpg.asset.json";
 import youngerDays from "@/assets/u5-younger_days.jpg.asset.json";
 import youngerYears from "@/assets/u5-younger_yrs.jpg.asset.json";
+import zanePortrait from "@/assets/u6-zane.jpg.asset.json";
+import zaneTwo from "@/assets/u6-zane_2.jpg.asset.json";
+import zaneMotherhood from "@/assets/u6-zane-_motherhood.jpg.asset.json";
 
 export const MAIN_OPENING_IMAGE = { url: mainOpening.url, alt: "Phindile" };
 
@@ -65,7 +68,12 @@ export const CHAPTER_IMAGES: Record<string, { url: string; alt: string }> = {
   "thus-far::s6": { url: firmLogo.url, alt: "PPN Attorneys" },
   "woman::mother": { url: momAndZane.url, alt: "Phindile and Zane" },
   "woman::lawyer": { url: lawRobes.url, alt: "Phindile in her advocate's robes" },
-  "little-hands::zane": { url: motherAndBaby.url, alt: "Phindile holding Zane" },
+  "little-hands::zane": { url: zaneMotherhood.url, alt: "Phindile and newborn Zane — dream big" },
+  "little-hands::first-steps": { url: zanePortrait.url, alt: "Zane as a little one" },
+  "garden::zane": { url: zaneTwo.url, alt: "Zane, all smiles" },
+  "memories::2020": { url: zanePortrait.url, alt: "Zane, curious and bright" },
+  "memories::2023": { url: zaneTwo.url, alt: "Zane in her pink blazer" },
+  "woman::mother-zane": { url: motherAndBaby.url, alt: "Phindile holding Zane" },
   "little-hands::traditions": { url: traditions.url, alt: "Zane decorating the Christmas tree" },
   "faithfulness::p5": { url: newbornZane.url, alt: "Newborn Zane" },
   "woman::owner": { url: businessOwner.url, alt: "Phindile outside court as a business owner" },
