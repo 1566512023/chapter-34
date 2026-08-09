@@ -71,12 +71,12 @@ export function RevealModal({ item, onClose, accent = "oklch(0.85 0.13 82)" }: P
         </h2>
         <div className="mt-4 h-px w-16" style={{ background: accent }} />
         {photo && (
-          <figure className="mt-6 overflow-hidden rounded-sm border border-current/10 shadow-lg">
+          <figure className="mt-6 flex justify-center overflow-hidden rounded-sm border border-current/10 bg-[color:var(--ink)]/5 shadow-lg">
             <img
               src={photo.url}
               alt={photo.alt}
               loading="lazy"
-              className="max-h-[22rem] w-full object-cover"
+              className="max-h-[26rem] w-auto max-w-full object-contain"
             />
           </figure>
         )}
