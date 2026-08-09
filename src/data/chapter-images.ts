@@ -1,6 +1,3 @@
-  "little-hands::outings": { url: mamaAndZane.url, alt: "A day out with Zane" },
-  "garden::sister-portrait": { url: sisterPortrait.url, alt: "Phindile's sister" },
-  "memories::2013": { url: graduationTrio.url, alt: "Graduation day, three generations" },
 /**
  * Photographs supplied by Phindile, mapped to the chapter item they belong to.
  * Key format: `${chapterId}::${itemId}`.
