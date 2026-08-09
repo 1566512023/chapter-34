@@ -82,6 +82,9 @@ export const CHAPTER_IMAGES: Record<string, { url: string; alt: string }> = {
   "letters::to-self": { url: recentPic.url, alt: "Phindile, recently" },
   "little-hands::school": { url: schoolDays.url, alt: "Zane's school days" },
   "memories::2024": { url: schoolMoments.url, alt: "Graduation moments with Zane" },
+  "little-hands::outings": { url: mamaAndZane.url, alt: "A day out with Zane" },
+  "garden::sister-portrait": { url: sisterPortrait.url, alt: "Phindile's sister" },
+  "memories::2013": { url: graduationTrio.url, alt: "Graduation day, three generations" },
 };
 
 export function chapterImage(chapterId: string, itemId: string) {
