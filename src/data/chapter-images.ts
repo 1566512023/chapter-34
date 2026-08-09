@@ -40,6 +40,16 @@ import theFirm from "@/assets/u4-the_firm.jpg.asset.json";
 import traditions from "@/assets/u4-traditions.jpg.asset.json";
 import uni from "@/assets/u4-uni.jpg.asset.json";
 import uniTwo from "@/assets/u4-uni_2.jpg.asset.json";
+import uniFive from "@/assets/u5-uni5.jpg.asset.json";
+import universityOne from "@/assets/u5-university.jpg.asset.json";
+import universityTwo from "@/assets/u5-university_2.jpg.asset.json";
+import whereSheComesFrom from "@/assets/u5-where_she_comes_from.png.asset.json";
+import whereSheComesFromGranny from "@/assets/u5-where_she_comes_fromff.jpg.asset.json";
+import whereSheIs from "@/assets/u5-where_she_is.jpg.asset.json";
+import womanOfFaith from "@/assets/u5-woman_of_faith.jpg.asset.json";
+import workingTowardsDream from "@/assets/u5-working_towards_dream.jpg.asset.json";
+import youngerDays from "@/assets/u5-younger_days.jpg.asset.json";
+import youngerYears from "@/assets/u5-younger_yrs.jpg.asset.json";
 
 export const MAIN_OPENING_IMAGE = { url: mainOpening.url, alt: "Phindile" };
 
@@ -63,8 +73,18 @@ export const CHAPTER_IMAGES: Record<string, { url: string; alt: string }> = {
   "woman::owner": { url: businessOwner.url, alt: "Phindile outside court as a business owner" },
   "woman::sister": { url: sisterGraduation.url, alt: "Phindile with her sister and granny at her graduation" },
   "garden::granny-graduation": { url: sisterGraduation2.url, alt: "Celebrating graduation with granny" },
-  "dreams::the-dream": { url: theDream.url, alt: "Phindile outside the High Court — the dream" },
-  "purpose::firm": { url: theFirm.url, alt: "PPN Attorneys — Your Trusted Legal Partner" },
+  "purpose::dream": { url: theDream.url, alt: "Phindile outside the High Court — the dream" },
+  "foundation::legacy": { url: theFirm.url, alt: "PPN Attorneys — Your Trusted Legal Partner" },
+  "foundation::family": { url: whereSheComesFrom.url, alt: "Where she comes from — a collage of family and early years" },
+  "woman::faith": { url: womanOfFaith.url, alt: "Phindile, a woman of faith" },
+  "woman::leader": { url: whereSheIs.url, alt: "Where she is now — Phindile today" },
+  "memories::2010": { url: youngerDays.url, alt: "Younger days" },
+  "memories::2011": { url: youngerYears.url, alt: "The younger years" },
+  "memories::2012": { url: universityOne.url, alt: "University years" },
+  "memories::2015": { url: uniFive.url, alt: "A night out during university" },
+  "memories::2016": { url: universityTwo.url, alt: "University residence days" },
+  "memories::2017": { url: whereSheComesFromGranny.url, alt: "Phindile with her granny" },
+  "memories::2018": { url: workingTowardsDream.url, alt: "Working towards the dream" },
   "thus-far::s2": { url: uni.url, alt: "Phindile during her university years" },
   "memories::2014": { url: uniTwo.url, alt: "University days" },
   "little-hands::birthdays": { url: birthdays.url, alt: "Zane's first birthday celebration" },
