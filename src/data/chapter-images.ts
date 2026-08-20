@@ -58,7 +58,7 @@ export const MAIN_OPENING_IMAGE = { url: mainOpening.url, alt: "Phindile" };
 
 export const CHAPTER_IMAGES: Record<string, { url: string; alt: string }> = {
   "garden::granny": { url: granny.url, alt: "Phindile with her granny on graduation day" },
-  "garden::sister": { url: sisterPortrait.url, alt: "Phindile and her sister" },
+  "garden::sister": { url: sisters.url, alt: "Phindile and her sister" },
   "foundation::god": { url: god.url, alt: "Phindile wearing her cross necklace" },
   "foundation::law": { url: lawyerCourt.url, alt: "Phindile outside the High Court" },
   "garden::foundation-granny": { url: foundationGranny.url, alt: "Granny, the foundation of who she is" },
